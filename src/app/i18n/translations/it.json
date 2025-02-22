@@ -1,0 +1,8 @@
+ {
+  "leave": {
+    "title": "Gestione Ferie",
+    "request": "Nuova Richiesta",
+    "status": "Stato Ferie",
+    "config": "Configurazione"
+  }
+}

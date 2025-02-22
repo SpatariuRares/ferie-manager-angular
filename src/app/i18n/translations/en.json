@@ -1,0 +1,8 @@
+ {
+  "leave": {
+    "title": "Leave Management",
+    "request": "New Request",
+    "status": "New Request",
+    "config": "Configuration"
+  }
+}
