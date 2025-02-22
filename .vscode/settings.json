@@ -4,5 +4,8 @@
     "Nuova",
     "Richiesta",
     "Stato"
+  ],
+  "i18n-ally.localesPaths": [
+    "src/app/i18n"
   ]
 }

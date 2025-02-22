@@ -1,8 +1,19 @@
  {
-  "leave": {
+  "dashboard": {
     "title": "Gestione Ferie",
-    "request": "Nuova Richiesta",
-    "status": "Stato Ferie",
-    "config": "Configurazione"
+    "menu": {
+      "overview": "Panoramica",
+      "leaveRequests": "Richieste Ferie",
+      "calendar": "Calendario",
+      "settings": "Impostazioni",
+      "profile": "Profilo",
+      "logout": "Esci"
+    },
+    "overview": {
+      "title": "Panoramica",
+      "leaveBalance": "Bilancio Ferie",
+      "pendingRequests": "Richieste in Sospeso",
+      "upcomingLeave": "Prossime Ferie"
+    }
   }
 }
