@@ -1,20 +1,2 @@
-<div class="app-container">
-  <header class="app-header">
-    <h1>{{ title }}</h1>
-  </header>
 
-  <main class="app-content">
-    <nav class="app-navigation">
-      <ul class="nav-tabs">
-        <li *ngFor="let tab of navigationTabs" [routerLink]="tab.route" routerLinkActive="active" class="nav-tab">
-          <i class="fas {{ tab.icon }}"></i>
-          {{ tab.label }}
-        </li>
-      </ul>
-    </nav>
-
-    <div class="content-area">
-      <router-outlet></router-outlet>
-    </div>
-  </main>
-</div>
+<router-outlet></router-outlet>

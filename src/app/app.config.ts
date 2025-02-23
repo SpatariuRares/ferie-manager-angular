@@ -3,24 +3,25 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
-import { provideTranslation } from './i18n/language.config';
-import { TranslocoHttpLoader } from './transloco-loader';
+ import { TranslocoHttpLoader } from './transloco-loader';
 import { provideTransloco } from '@ngneat/transloco';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(),
-    provideTranslation(), provideHttpClient(), provideTransloco({
-        config: { 
-          availableLangs: ['en'],
-          defaultLang: 'en',
-          // Remove this option if your application doesn't support changing language in runtime.
-          reRenderOnLangChange: true,
-          prodMode: !isDevMode(),
-        },
-        loader: TranslocoHttpLoader
-      }), provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideTransloco({
+      config: {
+        availableLangs: ['en', 'it'],
+        defaultLang: 'it',
+        fallbackLang: 'it',
+        reRenderOnLangChange: true,
+        prodMode: environment.production
+      },
+      loader: TranslocoHttpLoader
+    })
   ]
 };

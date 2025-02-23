@@ -16,24 +16,4 @@ interface NavigationTab {
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'ferie-manager';
-  hasEmployee = false;
-
-  navigationTabs: NavigationTab[] = [
-    {
-      label: 'Stato Ferie',
-      route: '/dashboard',
-      icon: 'fa-chart-bar'
-    },
-    {
-      label: 'Nuova Richiesta',
-      route: '/request',
-      icon: 'fa-calendar-plus'
-    },
-    {
-      label: 'Configurazione',
-      route: '/config',
-      icon: 'fa-cog'
-    }
-  ];
 }

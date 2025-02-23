@@ -1,3 +1,4 @@
+<!-- src/app/features/leave-manager/components/dashboard/dashboard.component.html -->
 <div class="dashboard-container">
   <mat-toolbar color="primary" class="flex justify-between">
     <div class="flex items-center">
@@ -20,21 +21,13 @@
   <mat-sidenav-container class="h-full">
     <mat-sidenav #sidenav mode="side" opened class="w-64">
       <mat-nav-list>
-        <a mat-list-item routerLink="overview" routerLinkActive="active">
-          <mat-icon matListItemIcon>dashboard</mat-icon>
-          {{ 'dashboard.menu.overview' | transloco }}
-        </a>
-        <a mat-list-item routerLink="leave-requests" routerLinkActive="active">
-          <mat-icon matListItemIcon>event</mat-icon>
-          {{ 'dashboard.menu.leaveRequests' | transloco }}
-        </a>
         <a mat-list-item routerLink="calendar" routerLinkActive="active">
           <mat-icon matListItemIcon>calendar_today</mat-icon>
           {{ 'dashboard.menu.calendar' | transloco }}
         </a>
-        <a mat-list-item routerLink="settings" routerLinkActive="active">
-          <mat-icon matListItemIcon>settings</mat-icon>
-          {{ 'dashboard.menu.settings' | transloco }}
+        <a mat-list-item routerLink="request" routerLinkActive="active">
+          <mat-icon matListItemIcon>event</mat-icon>
+          {{ 'dashboard.menu.request' | transloco }}
         </a>
       </mat-nav-list>
     </mat-sidenav>

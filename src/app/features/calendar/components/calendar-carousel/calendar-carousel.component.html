@@ -1,0 +1,19 @@
+<div class="calendar-carousel">
+  <button class="nav-button prev" (click)="previousMonths()" [disabled]="currentIndex === 0">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <div class="carousel-container">
+    <div class="months-wrapper" [style.transform]="'translateX(' + -currentIndex * 50 + '%)'">
+      <div *ngFor="let monthPair of monthPairs; let i = index" class="month-pair">
+        <app-calendar-month *ngFor="let month of monthPair" [monthData]="month" [weekDays]="weekDays"
+          (daySelected)="onDaySelected($event)">
+        </app-calendar-month>
+      </div>
+    </div>
+  </div>
+
+  <button class="nav-button next" (click)="nextMonths()" [disabled]="currentIndex === maxIndex">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>

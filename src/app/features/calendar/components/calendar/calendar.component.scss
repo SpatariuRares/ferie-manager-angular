@@ -1,0 +1,120 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+  padding: map-get($spacing, 'md');
+}
+
+.calendar {
+  &-container {
+    background-color: $color-background;
+  }
+
+  &-controls {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: $color-surface;
+    border-bottom: 1px solid $color-border;
+    padding: map-get($spacing, 'md');
+    margin-bottom: map-get($spacing, 'md');
+  }
+
+  &-grid {
+    display: grid;
+    gap: map-get($spacing, 'md');
+
+    @include media-breakpoint-up('sm') {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include media-breakpoint-up('lg') {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &-month {
+    background-color: $color-surface;
+    border-radius: map-get($spacing, 'sm');
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    &-header {
+      padding: map-get($spacing, 'sm');
+      background-color: $primary;
+      color: white;
+    }
+
+    &-content {
+      padding: map-get($spacing, 'sm');
+    }
+  }
+
+  &-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: map-get($spacing, 'sm');
+
+    .weekend {
+      color: $warn;
+    }
+  }
+
+  &-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: map-get($spacing, 'xs');
+  }
+}
+
+.calendar-day {
+  @include calendar-day-base;
+
+  &.day-normal {
+    background-color: $calendar-day-normal;
+  }
+
+  &.day-weekend {
+    background-color: $calendar-day-weekend;
+  }
+
+  &.day-holiday {
+    background-color: $calendar-day-holiday;
+  }
+
+  &.day-selected {
+    background-color: $calendar-day-selected;
+  }
+
+  &.day-bridge {
+    background-color: $calendar-day-bridge;
+    border: 2px solid darken($calendar-day-bridge, 10%);
+  }
+
+  &.day-today {
+    background-color: $calendar-day-today;
+    font-weight: bold;
+  }
+
+  &.day-leave {
+    background-color: $calendar-day-leave;
+  }
+}
+
+.holiday-indicator {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  color: $warn;
+  font-size: 0.75rem;
+}
+
+.holiday-list,
+.selected-days {
+  max-width: 42rem;
+  margin: map-get($spacing, 'lg') auto;
+}
+

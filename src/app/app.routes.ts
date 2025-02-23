@@ -15,7 +15,7 @@ export const routes: Routes = [
       {
         path: 'calendar',
         loadComponent: () =>
-          import('./features/leave-manager/components/calendar/calendar.component')
+          import('./features/calendar/components/calendar/calendar.component')
             .then(m => m.CalendarComponent)
       },
       {

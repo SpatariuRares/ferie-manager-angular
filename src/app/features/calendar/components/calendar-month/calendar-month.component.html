@@ -1,0 +1,16 @@
+<mat-card class="month-card">
+  <mat-card-header>
+    <mat-card-title>{{ monthData.name }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="week-days grid grid-cols-7">
+      <div *ngFor="let day of weekDays" class="text-center font-semibold" [class.text-red-500]="day.isWeekend">
+        {{ day.date | date:'EEE' }}
+      </div>
+    </div>
+    <div class="days-grid grid grid-cols-7">
+      <app-calendar-day *ngFor="let day of monthData.days" [day]="day"
+        (daySelected)="onDaySelected($event)"></app-calendar-day>
+    </div>
+  </mat-card-content>
+</mat-card>

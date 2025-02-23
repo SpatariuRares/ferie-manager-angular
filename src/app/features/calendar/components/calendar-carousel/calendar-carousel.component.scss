@@ -1,0 +1,70 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/mixins';
+
+.calendar-carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: map-get($spacing, 'lg') 0;
+}
+
+.carousel-container {
+  flex: 1;
+  overflow: hidden;
+  margin: 0 map-get($spacing, 'md');
+}
+
+.months-wrapper {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+}
+
+.month-pair {
+  display: flex;
+  gap: map-get($spacing, 'md');
+  min-width: 100%;
+  padding: 0 map-get($spacing, 'sm');
+
+  app-calendar-month {
+    flex: 1;
+  }
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background-color: $primary;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background-color: darken($primary, 10%);
+  }
+
+  &:disabled {
+    background-color: $color-border;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+
+  &.prev {
+    margin-right: map-get($spacing, 'sm');
+  }
+
+  &.next {
+    margin-left: map-get($spacing, 'sm');
+  }
+}

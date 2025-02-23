@@ -1,11 +1,9 @@
  {
   "dashboard": {
     "title": "Gestione Ferie",
-    "menu": {
-      "overview": "Panoramica",
-      "leaveRequests": "Richieste Ferie",
+   "menu": {
       "calendar": "Calendario",
-      "settings": "Impostazioni",
+      "request": "Nuova Richiesta",
       "profile": "Profilo",
       "logout": "Esci"
     },
@@ -15,5 +13,10 @@
       "pendingRequests": "Richieste in Sospeso",
       "upcomingLeave": "Prossime Ferie"
     }
+  },
+  "calendar": {
+    "holidays": "Festività",
+    "working_days": "Giorni Lavorativi",
+    "select_country": "Seleziona Paese"
   }
-}
+ }

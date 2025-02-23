@@ -1,0 +1,106 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+}
+
+.calendar-day {
+  width: $calendar-day-size;
+  height: $calendar-day-size;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  position: relative;
+  border: none;
+  padding: 0;
+  margin: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+
+sssssssssssssssssssssssssssssssssss
+
+  // Day states
+  &.day-normal {
+    background-color: $calendar-day-normal;
+    border: 1px solid darken($calendar-day-normal, 10%);
+
+    &:hover:not(:disabled) {
+      background-color: darken($calendar-day-normal, 5%);
+      border-color: $primary;
+    }
+  }
+
+  &.day-weekend {
+    background-color: $calendar-day-weekend;
+    border: 1px solid darken($calendar-day-weekend, 10%);
+    color: #FF6F00;
+  }
+
+  &.day-holiday {
+    background-color: $calendar-day-holiday;
+    border: 1px solid darken($calendar-day-holiday, 10%);
+    color: darken($primary, 10%);
+  }
+
+ &.day-selected {
+    background-color: $calendar-day-selected;
+    border: 2px solid darken($calendar-day-selected, 20%);
+    color: white;
+    box-shadow: 0 0 0 1px $accent;
+ }
+
+  &.day-bridge {
+    background-color: $calendar-day-bridge;
+    border: 2px solid darken($calendar-day-bridge, 15%);
+    color: darken($calendar-day-bridge, 50%);
+  }
+
+    &.day-today {
+      background-color: $calendar-day-today;
+      border: 2px solid white;
+      color: white;
+      box-shadow: 0 0 0 2px rgba($primary, 0.3);
+    }
+
+    &.day-leave {
+      background-color: $calendar-day-leave;
+      border: 1px solid darken($calendar-day-leave, 10%);
+      color: darken($calendar-day-leave, 30%);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  &:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px $color-shadow;
+    z-index: 1;
+  }
+}
+
+.holiday-indicator {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 12px !important;
+  width: 14px !important;
+  height: 14px !important;
+  color: $warn;
+  padding: 1px;
+
+  .mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+  }
+}
+
+.empty-day {
+  width: $calendar-day-size;
+  height: $calendar-day-size;
+}

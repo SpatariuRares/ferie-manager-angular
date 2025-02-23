@@ -1,0 +1,58 @@
+<div class="calendar-container">
+  <div class="controls mb-4 flex gap-4 items-center">
+    <mat-button-toggle-group [(ngModel)]="selectedYear" (change)="onYearChange()">
+      <mat-button-toggle [value]="currentYear">{{ currentYear }}</mat-button-toggle>
+      <mat-button-toggle [value]="currentYear + 1">{{ currentYear + 1 }}</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-form-field>
+      <mat-label>{{ 'calendar.country' | transloco }}</mat-label>
+      <mat-select [(ngModel)]="selectedCountry" (selectionChange)="onCountryChange()">
+        <mat-option *ngFor="let country of availableCountries" [value]="country">
+          {{ 'countries.' + country | transloco }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <app-calendar-carousel
+    [months]="months"
+    [weekDays]="weekDays"
+    (daySelected)="onDaySelected($event)">
+  </app-calendar-carousel>
+
+  <div class="holiday-list mt-6">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ 'calendar.holidays' | transloco }} {{ selectedYear }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-list>
+        <mat-list-item *ngFor="let holiday of yearHolidays">
+          <span class="font-medium">{{ formatDate(holiday.date) }}</span>
+          <span class="ml-4">{{ holiday.name }}</span>
+        </mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+  </div>
+
+  <div *ngIf="selectedDays.length > 0" class="selected-days mt-6">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ 'calendar.selectedDays' | transloco }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="p-4">
+        <p>{{ 'calendar.totalDays' | transloco }}: {{ selectedDays.length }}</p>
+        <p>{{ 'calendar.workingDays' | transloco }}: {{ workingDaysCount }}</p>
+        <p>{{ 'calendar.period' | transloco }}:
+          {{ formatDate(selectedDays[0]) }} - {{ formatDate(selectedDays[selectedDays.length - 1]) }}
+        </p>
+      </div>
+    </mat-expansion-panel>
+  </div>
+</div>

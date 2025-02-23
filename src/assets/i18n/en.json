@@ -1,1 +1,22 @@
-{}
+{
+  "dashboard": {
+    "title": "Leave Management",
+    "menu": {
+      "calendar": "Calendar",
+      "request": "New Request",
+      "profile": "Profile",
+      "logout": "Logout"
+    },
+    "overview": {
+      "title": "Overview",
+      "leaveBalance": "Leave Balance",
+      "pendingRequests": "Pending Requests",
+      "upcomingLeave": "Upcoming Leave"
+    }
+  },
+  "calendar": {
+    "holidays": "Holidays",
+    "working_days": "Working Days",
+    "select_country": "Select Country"
+  }
+}

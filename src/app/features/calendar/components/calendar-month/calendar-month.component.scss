@@ -1,0 +1,54 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/mixins';
+
+:host {
+  display: block;
+}
+
+.month-card {
+  background-color: $color-surface;
+  border-radius: map-get($spacing, 'sm');
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  &-header {
+    padding: map-get($spacing, 'md');
+    background-color: $primary;
+
+    .mat-card-title {
+      color: white;
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+  }
+
+  &-content {
+    padding: map-get($spacing, 'sm');
+  }
+}
+
+.week-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: map-get($spacing, 'sm');
+
+  .day-name {
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.875rem;
+    padding: map-get($spacing, 'xs');
+
+    &.weekend {
+      color: $warn;
+    }
+  }
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: map-get($spacing, 'xs');
+  justify-items: center;
+  padding: map-get($spacing, 'xs');
+}

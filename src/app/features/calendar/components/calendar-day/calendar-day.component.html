@@ -1,0 +1,6 @@
+<button *ngIf="day.date" [class]="getDayClass()" [disabled]="day.isDisabled" (click)="onDayClick()"
+  [matTooltip]="getTooltip()" class="calendar-day">
+  {{ day.date.getDate() }}
+  <mat-icon *ngIf="day.isHoliday" class="holiday-indicator">star</mat-icon>
+</button>
+<div *ngIf="!day.date" class="empty-day"></div>

@@ -31,6 +31,8 @@ export class DashboardComponent {
   constructor(private translocoService: TranslocoService) {}
 
   switchLanguage(lang: string) {
+    console.log('switchLanguage', lang);
+
     this.translocoService.setActiveLang(lang);
   }
 
