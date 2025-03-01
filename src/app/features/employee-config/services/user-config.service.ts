@@ -19,6 +19,10 @@ export class UserConfigService {
   }
 
   saveUserProfile(profile: UserProfile): void {
+    // Ensure we have valid numbers
+    profile.annualAllowanceHours = profile.annualAllowanceHours || 0;
+    profile.unusedPreviousYearHours = profile.unusedPreviousYearHours || 0;
+
     this.browserStorageService.setItem(this.STORAGE_KEY, JSON.stringify(profile));
     this.userProfile.next(profile);
   }
@@ -28,10 +32,11 @@ export class UserConfigService {
     if (savedProfile) {
       try {
         const profile = JSON.parse(savedProfile);
-        // Convert string date back to Date object
-        if (profile.startDate) {
-          profile.startDate = new Date(profile.startDate);
-        }
+
+        // Ensure we have valid numbers
+        profile.annualAllowanceHours = profile.annualAllowanceHours || 0;
+        profile.unusedPreviousYearHours = profile.unusedPreviousYearHours || 0;
+
         this.userProfile.next(profile);
       } catch (e) {
         console.error('Error parsing user profile', e);
@@ -40,31 +45,36 @@ export class UserConfigService {
     }
   }
 
-  calculateAccruedLeave(profile: UserProfile): number {
-    if (!profile || !profile.startDate) {
+  calculateAccruedHours(profile: UserProfile): number {
+    if (!profile) {
       return 0;
     }
 
-    const now = new Date();
-    const startDate = new Date(profile.startDate);
+    const currentMonth = new Date().getMonth(); // 0-11
+    const totalMonths = 12;
 
-    // Calculate months of employment
-    const monthsDiff = (now.getFullYear() - startDate.getFullYear()) * 12 +
-                      (now.getMonth() - startDate.getMonth());
+    // Ensure we have valid numbers
+    const annualAllowance = profile.annualAllowanceHours || 0;
+    const unusedHours = profile.unusedPreviousYearHours || 0;
 
-    // Calculate years of employment (for Italian contracts typical calculation)
-    const yearsOfEmployment = monthsDiff / 12;
+    // If the employee started this year, prorate the annual allowance
+    let accrued = 0;
 
-    // Calculate accrued leave based on months worked and annual allowance
-    // Assuming leave accrues linearly throughout the year
-    const accrued = (profile.annualAllowance / 12) * monthsDiff;
+    if (profile.startedThisYear) {
+      // Calculate hours accrued based on the current month (assuming linear accrual)
+      // If we're in June (month 5), they've accrued (5+1)/12 of their annual allowance
+      accrued = (annualAllowance / totalMonths) * (currentMonth + 1);
+    } else {
+      // If they didn't start this year, calculate based on which month we're in
+      // (assuming they accrue leave progressively throughout the year)
+      accrued = (annualAllowance / totalMonths) * (currentMonth + 1);
+    }
 
-    // Add carried over days
-    return Math.round((accrued + (profile.carriedOver || 0)) * 10) / 10;
+    // Add unused hours from previous years
+    return Math.round((accrued + unusedHours) * 10) / 10;
   }
 
-  calculateRemainingLeave(profile: UserProfile): number {
-    const accrued = this.calculateAccruedLeave(profile);
-    return Math.round((accrued - (profile.usedLeave || 0)) * 10) / 10;
+  calculateRemainingHours(profile: UserProfile): number {
+    return this.calculateAccruedHours(profile);
   }
 }

@@ -17,10 +17,14 @@
   }
 }
 
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  min-height: 56px; // Match height of form fields
+  padding: 0 16px;
+}
+
 .leave-metrics {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: map-get($spacing, 'md');
   margin: map-get($spacing, 'lg') 0;
 }
 
@@ -36,7 +40,13 @@
   .metric-value {
     font-size: 2rem;
     font-weight: 700;
-    padding: map-get($spacing, 'md');
+    padding: map-get($spacing, 'md') map-get($spacing, 'md') 0;
+  }
+
+  .metric-subtitle {
+    font-size: 1rem;
+    color: rgba(0, 0, 0, 0.6);
+    padding-bottom: map-get($spacing, 'md');
   }
 }
 

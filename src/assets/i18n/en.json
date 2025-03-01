@@ -19,7 +19,7 @@
     "working_days": "Working Days",
     "select_country": "Select Country",
     "selected_days": "Selected Days",
-    "total_days": "total_days",
+    "total_days": "Total Days",
     "period": "Period"
   },
   "countries": {
@@ -30,23 +30,20 @@
   "profile": {
     "title": "User Profile",
     "name": "Name",
-    "email": "Email",
-    "start_date": "Employment Start Date",
-    "annual_allowance": "Annual Leave Allowance",
-    "used_leave": "Used Leave Days",
-    "carried_over": "Carried Over Days",
-    "preferred_language": "Preferred Language",
-    "accrued_leave": "Accrued Leave",
-    "remaining_leave": "Remaining Leave",
+    "country": "Country",
+    "started_this_year": "Started working this year",
+    "annual_allowance_days": "Annual Leave (days)",
+    "unused_previous_year_days": "Unused hours from Previous Year",
+    "accrued_leave_days": "Accrued Leave Days",
+    "equivalent_hours": "Equivalent in hours",
+    "equivalent_days": "Equivalent in days",
     "save": "Save Profile",
     "errors": {
       "name_required": "Name is required",
-      "email_invalid": "Invalid email format",
-      "date_required": "Start date is required",
+      "country_required": "Country is required",
       "allowance_required": "Annual allowance is required",
       "allowance_min": "Allowance must be a positive number",
-      "used_leave_min": "Used leave cannot be negative",
-      "carried_over_min": "Carried over days cannot be negative"
+      "unused_days_min": "Unused days cannot be negative"
     }
   }
 }
