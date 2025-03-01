@@ -32,8 +32,8 @@ import { UserProfile } from '../../../../core/models/user-profile.model';
 })
 export class UserProfileComponent implements OnInit {
   profileForm: FormGroup;
-  accruedHours = 0;
-  accruedDays = 0;
+  totalAvailableHours = 0;
+  totalAvailableDays = 0;
   availableCountries = ['IT', 'FR', 'US']; // Match with calendar options
 
   // Constants for conversion
@@ -55,9 +55,9 @@ export class UserProfileComponent implements OnInit {
           startedThisYear: profile.startedThisYear,
           country: profile.country,
           annualAllowanceDays: this.convertHoursToDays(profile.annualAllowanceHours),
-          unusedPreviousYearHours: this.convertHoursToDays(profile.unusedPreviousYearHours)
+          unusedPreviousYearHours: profile.unusedPreviousYearHours
         });
-        this.calculateLeaveMetrics();
+        this.calculateTotalAvailable();
       }
     });
   }
@@ -86,24 +86,27 @@ export class UserProfileComponent implements OnInit {
       };
 
       this.userConfigService.saveUserProfile(profile);
-      this.calculateLeaveMetrics();
+      this.calculateTotalAvailable();
     }
   }
 
-  private calculateLeaveMetrics(): void {
+  private calculateTotalAvailable(): void {
     const formValue = this.profileForm.value;
 
-    // Create a temporary profile with hours for calculation
-    const tempProfile: UserProfile = {
-      name: formValue.name,
-      startedThisYear: formValue.startedThisYear,
-      country: formValue.country,
-      annualAllowanceHours: this.convertDaysToHours(formValue.annualAllowanceDays || 0),
-      unusedPreviousYearHours: this.convertDaysToHours(formValue.unusedPreviousYearHours || 0)
-    };
+    // Get the annual allowance and unused previous year days
+    const annualAllowanceDays = formValue.annualAllowanceDays || 0;
+    const unusedPreviousYearHours = this.convertHoursToDays(formValue.unusedPreviousYearHours || 0);
 
-    this.accruedHours = this.userConfigService.calculateAccruedHours(tempProfile);
-    this.accruedDays = this.accruedHours;
+    // If started this year, prorate the annual allowance based on month
+    let annualAllowanceToUse = annualAllowanceDays;
+    if (formValue.startedThisYear) {
+      const currentMonth = new Date().getMonth(); // 0-11
+      annualAllowanceToUse = (annualAllowanceDays / 12) * (12 - currentMonth);
+    }
+
+    // Calculate total available days for the whole year
+    this.totalAvailableDays = Math.round((annualAllowanceToUse + unusedPreviousYearHours) * 10) / 10;
+    this.totalAvailableHours = this.convertDaysToHours(this.totalAvailableDays);
   }
 
   // Convert between days and hours, returning 0 for invalid values
@@ -120,7 +123,6 @@ export class UserProfileComponent implements OnInit {
     }
     return Math.round((hours / this.HOURS_PER_DAY) * 10) / 10;
   }
-
 
   // Safe getters for form values to avoid NaN in the UI
   getAnnualAllowanceDays(): number {

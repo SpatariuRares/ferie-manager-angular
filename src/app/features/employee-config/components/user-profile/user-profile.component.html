@@ -42,10 +42,10 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>{{ 'profile.unused_previous_year_days' | transloco }}</mat-label>
+        <mat-label>{{ 'profile.unused_previous_year_hours' | transloco }}</mat-label>
         <input matInput type="number" formControlName="unusedPreviousYearHours" required>
         <mat-hint>{{ 'profile.equivalent_days' | transloco }}: {{ convertHoursToDays(getUnusedPreviousDays()) }}</mat-hint>
-        <mat-error *ngIf="profileForm.get('unusedPreviousYearHours')?.hasError('min')">
+        <mat-error *ngIf="profileForm.get('unusedPreviousYearDays')?.hasError('min')">
           {{ 'profile.errors.unused_days_min' | transloco }}
         </mat-error>
       </mat-form-field>
@@ -54,11 +54,11 @@
     <div class="leave-metrics">
       <mat-card class="metric-card">
         <mat-card-header>
-          <mat-card-title>{{ 'profile.accrued_leave_days' | transloco }}</mat-card-title>
+          <mat-card-title>{{ 'profile.total_available_days' | transloco }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="metric-value">{{ accruedDays | number:'1.1-1' }}</div>
-          <div class="metric-subtitle">{{ 'profile.equivalent_hours' | transloco }}: {{ accruedHours | number:'1.0-0' }}</div>
+          <div class="metric-value">{{ totalAvailableDays | number:'1.1-1' }}</div>
+          <div class="metric-subtitle">{{ 'profile.equivalent_hours' | transloco }}: {{ totalAvailableHours | number:'1.0-0' }}</div>
         </mat-card-content>
       </mat-card>
     </div>
