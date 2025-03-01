@@ -271,29 +271,61 @@ export class CalendarComponent implements OnInit, OnDestroy {
       return false;
     }
 
-    // 2. Caso specifico per il ponte Aprile-Maggio
-    const month = date.getMonth();
-    const day = date.getDate();
+    // 2. Verifica se il giorno è tra due festività ravvicinate
+    return this.isDateInBridgePeriod(date);
+  }
 
-    if ((month === 3 && day >= 19 && day <= 30) ||  // Aprile 19-30
-        (month === 4 && day >= 1 && day <= 4)) {    // Maggio 1-4
-      return true;
+  private isDateInBridgePeriod(date: Date): boolean {
+    // Cerca la festività o weekend precedente più vicina
+    const prevNonWorkingDay = this.findPreviousNonWorkingDay(date);
+
+    // Cerca la festività o weekend successiva più vicina
+    const nextNonWorkingDay = this.findNextNonWorkingDay(date);
+
+    if (!prevNonWorkingDay || !nextNonWorkingDay) {
+      return false;
     }
 
-    // 3. Logica generale per i ponti: giorno lavorativo tra due non lavorativi
+    // Calcola la distanza in giorni tra le due festività/weekend
+    const daysBetween = Math.floor(
+      (nextNonWorkingDay.getTime() - prevNonWorkingDay.getTime()) / (1000 * 60 * 60 * 24)
+    );
+
+    // Se le festività sono abbastanza vicine (meno di 5 giorni lavorativi tra loro),
+    // allora consideriamo tutti i giorni lavorativi tra loro come potenziali ponti
+    return daysBetween <= 4; // Massimo 4-5 giorni lavorativi + la festività all'inizio e alla fine
+  }
+
+  private findPreviousNonWorkingDay(date: Date): Date | null {
+    const maxDaysToLook = 10; // Limita la ricerca a un numero ragionevole di giorni
     const prevDay = new Date(date);
-    prevDay.setDate(date.getDate() - 1);
 
+    for (let i = 1; i <= maxDaysToLook; i++) {
+      prevDay.setDate(date.getDate() - i);
+
+      if (!this.holidayService.isWorkingDay(prevDay) ||
+          this.holidayService.isHoliday(prevDay, this.yearHolidays)) {
+        return prevDay;
+      }
+    }
+
+    return null;
+  }
+
+  private findNextNonWorkingDay(date: Date): Date | null {
+    const maxDaysToLook = 10; // Limita la ricerca a un numero ragionevole di giorni
     const nextDay = new Date(date);
-    nextDay.setDate(date.getDate() + 1);
 
-    const isPrevNonWorking = !this.holidayService.isWorkingDay(prevDay) ||
-                            this.holidayService.isHoliday(prevDay, this.yearHolidays);
+    for (let i = 1; i <= maxDaysToLook; i++) {
+      nextDay.setDate(date.getDate() + i);
 
-    const isNextNonWorking = !this.holidayService.isWorkingDay(nextDay) ||
-                            this.holidayService.isHoliday(nextDay, this.yearHolidays);
+      if (!this.holidayService.isWorkingDay(nextDay) ||
+          this.holidayService.isHoliday(nextDay, this.yearHolidays)) {
+        return nextDay;
+      }
+    }
 
-    return isPrevNonWorking && isNextNonWorking;
+    return null;
   }
 
   private isDateSelected(date: Date): boolean {

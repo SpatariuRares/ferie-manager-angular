@@ -47,7 +47,7 @@ export class CalendarCarouselComponent implements OnInit {
     }
 
     // Calculate max index for pagination
-    this.maxIndex = Math.max(0, this.monthPairs.length - 1);
+    this.maxIndex = Math.max(0, this.months.length - 1);
 
     console.log('Month pairs updated:', this.monthPairs.map(pair =>
       pair.map(m => m.name).join('-')
