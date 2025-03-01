@@ -124,6 +124,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     console.log('Working days:', this.currentConfig.workingDays);
     console.log('Week starts on:', this.currentConfig.weekStartsOn);
   }
+
   private getDaysInMonth(year: number, month: number): DayInfo[] {
     const days: DayInfo[] = [];
     const date = new Date(year, month, 1);
@@ -131,10 +132,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     while (date.getMonth() === month) {
       const holidayInfo = this.holidayService.getHolidayInfo(date, this.yearHolidays);
+      const isWeekend = !this.holidayService.isWorkingDay(date);
 
       days.push({
         date: new Date(date),
-        isWeekend: date.getDay() === 0 || date.getDay() === 6,
+        isWeekend: isWeekend,
         isHoliday: !!holidayInfo,
         holidayName: holidayInfo?.name,
         isSelected: false,
@@ -147,15 +149,32 @@ export class CalendarComponent implements OnInit, OnDestroy {
       date.setDate(date.getDate() + 1);
     }
 
-    // Aggiungi i giorni vuoti all'inizio per allineare correttamente
+    // Add empty days at the beginning for proper alignment based on weekStartsOn
     const firstDay = days[0].date.getDay();
-    const paddingDays = firstDay === 0 ? 6 : firstDay - 1;
+    // Calculate padding based on the current config's weekStartsOn
+    const weekStartsOn = this.currentConfig.weekStartsOn;
+    // If week starts on Monday (1), we need padding if firstDay is > 1 or 0 (Sunday)
+    // If week starts on Sunday (0), we need padding if firstDay > 0
+    let paddingDays = 0;
+
+    if (weekStartsOn === 1) {
+      // For Monday start
+      paddingDays = firstDay === 0 ? 6 : firstDay - 1;
+    } else if (weekStartsOn === 0) {
+      // For Sunday start
+      paddingDays = firstDay;
+    } else if (weekStartsOn === 6) {
+      // For Saturday start
+      paddingDays = (firstDay + 1) % 7;
+    }
+
     for (let i = 0; i < paddingDays; i++) {
       days.unshift({} as DayInfo);
     }
 
     return days;
   }
+
 
 
   private getMonthName(monthIndex: number): string {

@@ -26,7 +26,7 @@ export const COUNTRY_CONFIGS: Record<string, CalendarConfig> = {
     supportedLanguages: ['it', 'en'],
     dateFormat: 'dd/MM/yyyy',
     workingDays: [1, 2, 3, 4, 5],
-    weekStartsOn: 0
+    weekStartsOn: 1
   },
   FR: {
     locale: 'fr-FR',
@@ -35,7 +35,7 @@ export const COUNTRY_CONFIGS: Record<string, CalendarConfig> = {
     supportedLanguages: ['fr', 'en'],
     dateFormat: 'dd/MM/yyyy',
     workingDays: [1, 2, 3, 4, 5],
-    weekStartsOn: 0
+    weekStartsOn: 1
   },
   US: {
     locale: 'us-US',
