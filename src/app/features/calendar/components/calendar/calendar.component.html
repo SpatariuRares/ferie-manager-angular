@@ -52,6 +52,13 @@
         <p>{{ 'calendar.period' | transloco }}:
           {{ formatDate(selectedDays[0]) }} - {{ formatDate(selectedDays[selectedDays.length - 1]) }}
         </p>
+
+        <div class="flex justify-end mt-4">
+          <mat-button-toggle mat-raised-button color="primary" (click)="saveLeaveRequest()">
+            <mat-icon>save</mat-icon>
+            {{ 'calendar.save_request' | transloco }}
+          </mat-button-toggle>
+        </div>
       </div>
     </mat-expansion-panel>
   </div>

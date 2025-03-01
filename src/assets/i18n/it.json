@@ -20,7 +20,8 @@
     "select_country": "Seleziona Paese",
     "selected_days": "Giorni Selezionati",
     "total_days": "Giorni Totali",
-    "period": "Periodo"
+    "period": "Periodo",
+    "save_request": "Salva Richiesta"
   },
   "countries": {
     "IT": "Italia",

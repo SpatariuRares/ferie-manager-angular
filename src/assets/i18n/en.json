@@ -20,7 +20,8 @@
     "select_country": "Select Country",
     "selected_days": "Selected Days",
     "total_days": "Total Days",
-    "period": "Period"
+    "period": "Period",
+    "save_request": "Save Request"
   },
   "countries": {
     "IT": "Italy",

@@ -14,6 +14,10 @@ import { CalendarService } from '../../services/calendar.service';
  import { CalendarConfig, COUNTRY_CONFIGS, DEFAULT_CALENDAR_CONFIG } from '../../config/calendar.config';
 import { MonthData, HolidayInfo, DayInfo } from '../../../../core/models/calendar.models';
 import { CalendarCarouselComponent } from '../calendar-carousel/calendar-carousel.component';
+import { LeaveRequestService } from '../../../leave-manager/services/leave-request.service';
+import { LeaveRequest } from '../../../../core/models/leave-request.model';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-calendar',
@@ -24,8 +28,10 @@ import { CalendarCarouselComponent } from '../calendar-carousel/calendar-carouse
     MatButtonToggleModule,
     MatExpansionModule,
     MatListModule,
+    MatIconModule,
     MatSelectModule,
     TranslocoPipe,
+    MatSnackBarModule,
     CalendarCarouselComponent
   ],
   templateUrl: "./calendar.component.html",
@@ -39,6 +45,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   months: MonthData[] = [];
   weekDays: DayInfo[] = [];
+  private existingLeaves: Date[] = [];
   yearHolidays: HolidayInfo[] = [];
   currentYear = new Date().getFullYear();
   selectedYear = this.currentYear;
@@ -56,6 +63,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
   constructor(
     private holidayService: HolidayService,
     private calendarService: CalendarService,
+    private leaveRequestService: LeaveRequestService,
+    private snackBar: MatSnackBar,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -65,6 +74,12 @@ export class CalendarComponent implements OnInit, OnDestroy {
       .subscribe(config => {
         this.currentConfig = config;
         this.initializeCalendar();
+      });
+    this.leaveRequestService.getLeaveRequests()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(requests => {
+        this.existingLeaves = this.getAllDatesFromRequests(requests);
+        this.updateMonthsData();
       });
 
     // In ngOnInit or constructor
@@ -197,6 +212,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
         const holidayInfo = this.holidayService.getHolidayInfo(day.date, this.yearHolidays);
         const isWeekend = !this.holidayService.isWorkingDay(day.date);
+        const isLeave = this.isDateInExistingLeaves(day.date);
 
         return {
           ...day,
@@ -206,15 +222,25 @@ export class CalendarComponent implements OnInit, OnDestroy {
           isSelected: this.isDateSelected(day.date),
           isBridge: this.isBridgeDay(day.date),
           isToday: this.isSameDay(day.date, today),
-          // isDisabled: day.date < today || isWeekend || !!holidayInfo
+          isLeave: isLeave,
           isDisabled: false
         };
       })
     }));
   }
 
+  private isDateInExistingLeaves(date: Date): boolean {
+    return this.existingLeaves.some(leaveDate => this.isSameDay(leaveDate, date));
+  }
+
   onDaySelected(day: DayInfo) {
     if (day.isDisabled) return;
+
+    // Opzionale: aggiungi un avviso se l'utente cerca di selezionare un giorno già prenotato
+    if (day.isLeave) {
+      this.snackBar.open('Questo giorno è già stato prenotato come ferie', 'Chiudi', { duration: 3000 });
+      return;
+    }
 
     if (!this.selectedStart || (this.selectedStart && this.selectedEnd)) {
       this.selectedStart = day.date;
@@ -236,6 +262,16 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.workingDaysCount = 0;
     } else if (this.selectedStart && this.selectedEnd) {
       this.selectedDays = this.getDaysBetween(this.selectedStart, this.selectedEnd);
+
+      // Verifica se ci sono giorni già prenotati nell'intervallo selezionato
+      const alreadyBookedDays = this.selectedDays.filter(date =>
+        this.existingLeaves.some(leaveDate => this.isSameDay(date, leaveDate))
+      );
+
+      if (alreadyBookedDays.length > 0) {
+        this.snackBar.open(`Attenzione: ${alreadyBookedDays.length} giorni nell'intervallo selezionato sono già prenotati`, 'Chiudi', { duration: 5000 });
+      }
+
       this.workingDaysCount = this.calculateWorkingDays();
     } else {
       this.selectedDays = [this.selectedStart];
@@ -340,5 +376,43 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   formatDate(date: Date): string {
     return this.calendarService.formatDate(date, this.currentConfig);
+  }
+  saveLeaveRequest(): void {
+    if (!this.selectedDays.length) {
+      this.snackBar.open('Per favore seleziona i giorni per la tua richiesta di ferie', 'Chiudi', { duration: 3000 });
+      return;
+    }
+
+    const leaveRequest: LeaveRequest = {
+      startDate: this.selectedDays[0],
+      endDate: this.selectedDays[this.selectedDays.length - 1],
+      totalDays: this.selectedDays.length,
+      workingDays: this.workingDaysCount,
+      createdAt: new Date()
+    };
+
+    this.leaveRequestService.saveLeaveRequest(leaveRequest);
+    this.snackBar.open('Richiesta ferie salvata con successo', 'Chiudi', { duration: 3000 });
+
+    this.existingLeaves = [...this.existingLeaves, ...this.selectedDays];
+
+    // Reset della selezione dopo il salvataggio
+    this.selectedStart = null;
+    this.selectedEnd = null;
+    this.selectedDays = [];
+    this.workingDaysCount = 0;
+    this.updateSelection();
+      this.updateMonthsData(); // Aggiorna la visualizzazione del calendario
+
+  }
+  private getAllDatesFromRequests(requests: LeaveRequest[]): Date[] {
+    const allDates: Date[] = [];
+
+    requests.forEach(request => {
+      const dateRange = this.getDaysBetween(new Date(request.startDate), new Date(request.endDate));
+      allDates.push(...dateRange);
+    });
+
+    return allDates;
   }
 }

@@ -21,7 +21,6 @@
   transition: all 0.2s ease;
   font-weight: 500;
 
-sssssssssssssssssssssssssssssssssss
 
   // Day states
   &.day-normal {
@@ -33,7 +32,11 @@ sssssssssssssssssssssssssssssssssss
       border-color: $primary;
     }
   }
-
+  &.day-leave {
+    background-color: $calendar-day-leave;
+    border: 1px solid darken($calendar-day-leave, 10%);
+    color: darken($calendar-day-leave, 30%);
+  }
   &.day-weekend {
     background-color: $calendar-day-weekend;
     border: 1px solid darken($calendar-day-weekend, 10%);
@@ -46,12 +49,6 @@ sssssssssssssssssssssssssssssssssss
     color: darken($primary, 10%);
   }
 
- &.day-selected {
-    background-color: $calendar-day-selected;
-    border: 2px solid darken($calendar-day-selected, 20%);
-    color: white;
-    box-shadow: 0 0 0 1px $accent;
- }
 
   &.day-bridge {
     background-color: $calendar-day-bridge;
@@ -59,23 +56,26 @@ sssssssssssssssssssssssssssssssssss
     color: darken($calendar-day-bridge, 50%);
   }
 
-    &.day-today {
-      background-color: $calendar-day-today;
-      border: 2px solid white;
-      color: white;
-      box-shadow: 0 0 0 2px rgba($primary, 0.3);
-    }
+  &.day-selected {
+     background-color: $calendar-day-selected;
+     border: 2px solid darken($calendar-day-selected, 20%);
+     color: white;
+     box-shadow: 0 0 0 1px $accent;
+  }
 
-    &.day-leave {
-      background-color: $calendar-day-leave;
-      border: 1px solid darken($calendar-day-leave, 10%);
-      color: darken($calendar-day-leave, 30%);
-    }
+  &.day-today {
+    background-color: $calendar-day-today;
+    border: 2px solid white;
+    color: white;
+    box-shadow: 0 0 0 2px rgba($primary, 0.3);
+  }
 
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
   &:hover:not(:disabled) {
     transform: scale(1.05);
     box-shadow: 0 2px 8px $color-shadow;
