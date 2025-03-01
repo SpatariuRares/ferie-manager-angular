@@ -27,6 +27,11 @@ export class CalendarCarouselComponent implements OnInit {
       this.monthPairs.push(this.months.slice(i, i + 2));
     }
     this.maxIndex = Math.max(0, this.monthPairs.length - 1);
+
+    // Debug per verificare le coppie create
+    console.log('Month pairs created:', this.monthPairs.map(pair =>
+      pair.map(m => m.name).join('-')
+    ));
   }
 
   previousMonths() {

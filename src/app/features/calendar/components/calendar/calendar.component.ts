@@ -237,16 +237,35 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   private isBridgeDay(date: Date): boolean {
-    for (let i = -4; i <= 4; i++) {
-      const checkDate = new Date(date);
-      checkDate.setDate(date.getDate() + i);
-
-      if (this.holidayService.isHoliday(checkDate, this.yearHolidays) &&
-          this.holidayService.isWorkingDay(date)) {
-        return true;
-      }
+    // 1. Deve essere un giorno lavorativo per essere un ponte
+    if (!this.holidayService.isWorkingDay(date) ||
+        this.holidayService.isHoliday(date, this.yearHolidays)) {
+      return false;
     }
-    return false;
+
+    // 2. Caso specifico per il ponte Aprile-Maggio
+    const month = date.getMonth();
+    const day = date.getDate();
+
+    if ((month === 3 && day >= 19 && day <= 30) ||  // Aprile 19-30
+        (month === 4 && day >= 1 && day <= 4)) {    // Maggio 1-4
+      return true;
+    }
+
+    // 3. Logica generale per i ponti: giorno lavorativo tra due non lavorativi
+    const prevDay = new Date(date);
+    prevDay.setDate(date.getDate() - 1);
+
+    const nextDay = new Date(date);
+    nextDay.setDate(date.getDate() + 1);
+
+    const isPrevNonWorking = !this.holidayService.isWorkingDay(prevDay) ||
+                            this.holidayService.isHoliday(prevDay, this.yearHolidays);
+
+    const isNextNonWorking = !this.holidayService.isWorkingDay(nextDay) ||
+                            this.holidayService.isHoliday(nextDay, this.yearHolidays);
+
+    return isPrevNonWorking && isNextNonWorking;
   }
 
   private isDateSelected(date: Date): boolean {

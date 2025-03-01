@@ -6,7 +6,10 @@
   <div class="carousel-container">
     <div class="months-wrapper" [style.transform]="'translateX(' + -currentIndex * 50 + '%)'">
       <div *ngFor="let monthPair of monthPairs; let i = index" class="month-pair">
-        <app-calendar-month *ngFor="let month of monthPair" [monthData]="month" [weekDays]="weekDays"
+        <app-calendar-month
+          *ngFor="let month of monthPair"
+          [monthData]="month"
+          [weekDays]="weekDays"
           (daySelected)="onDaySelected($event)">
         </app-calendar-month>
       </div>
