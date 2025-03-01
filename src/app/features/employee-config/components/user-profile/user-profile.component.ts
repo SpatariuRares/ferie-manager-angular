@@ -12,6 +12,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { UserConfigService } from '../../services/user-config.service';
 import { UserProfile } from '../../../../core/models/user-profile.model';
 import { MatNativeDateModule } from '@angular/material/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -44,7 +45,8 @@ export class UserProfileComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private userConfigService: UserConfigService
+    private userConfigService: UserConfigService,
+    private router: Router // Inject Router
   ) {
     this.profileForm = this.createForm();
     this.setupStartDateValidation();
@@ -117,6 +119,8 @@ export class UserProfileComponent implements OnInit {
 
       this.userConfigService.saveUserProfile(profile);
       this.calculateTotalAvailable();
+
+      this.router.navigate(['/calendar']);
     }
   }
 
