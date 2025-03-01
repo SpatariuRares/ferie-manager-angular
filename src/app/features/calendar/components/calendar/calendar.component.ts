@@ -56,7 +56,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   constructor(
     private holidayService: HolidayService,
     private calendarService: CalendarService,
-    private cdr: ChangeDetectorRef  // Aggiungi questo
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -66,6 +66,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
         this.currentConfig = config;
         this.initializeCalendar();
       });
+
+    // In ngOnInit or constructor
+    this.selectedCountry = this.currentConfig.country || DEFAULT_CALENDAR_CONFIG.country;
   }
 
   ngOnDestroy() {

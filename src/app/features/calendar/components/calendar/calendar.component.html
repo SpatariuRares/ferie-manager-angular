@@ -6,7 +6,7 @@
     </mat-button-toggle-group>
 
     <mat-form-field>
-      <mat-label>{{ 'calendar.country' | transloco }}</mat-label>
+      <mat-label>{{ 'calendar.select_country' | transloco }}</mat-label>
       <mat-select [(ngModel)]="selectedCountry" (selectionChange)="onCountryChange()">
         <mat-option *ngFor="let country of availableCountries" [value]="country">
           {{ 'countries.' + country | transloco }}
@@ -31,7 +31,7 @@
 
       <mat-list>
         <mat-list-item *ngFor="let holiday of yearHolidays">
-          <span class="font-medium">{{ formatDate(holiday.date) }}</span>
+          <span class="font-medium">{{ formatDate(holiday.date)+' '}}</span>
           <span class="ml-4">{{ holiday.name }}</span>
         </mat-list-item>
       </mat-list>
@@ -42,13 +42,13 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{ 'calendar.selectedDays' | transloco }}
+          {{ 'calendar.selected_days' | transloco }}
         </mat-panel-title>
       </mat-expansion-panel-header>
 
       <div class="p-4">
-        <p>{{ 'calendar.totalDays' | transloco }}: {{ selectedDays.length }}</p>
-        <p>{{ 'calendar.workingDays' | transloco }}: {{ workingDaysCount }}</p>
+        <p>{{ 'calendar.total_days' | transloco }}: {{ selectedDays.length }}</p>
+        <p>{{ 'calendar.working_days' | transloco }}: {{ workingDaysCount }}</p>
         <p>{{ 'calendar.period' | transloco }}:
           {{ formatDate(selectedDays[0]) }} - {{ formatDate(selectedDays[selectedDays.length - 1]) }}
         </p>

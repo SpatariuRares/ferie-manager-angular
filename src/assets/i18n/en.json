@@ -17,6 +17,14 @@
   "calendar": {
     "holidays": "Holidays",
     "working_days": "Working Days",
-    "select_country": "Select Country"
+    "select_country": "Select Country",
+    "selected_days": "Selected Days",
+    "total_days": "total_days",
+    "period": "Period"
+  },
+  "countries": {
+    "IT": "Italia",
+    "FR": "Francia",
+    "US": "Stati Uniti"
   }
 }

@@ -1,5 +1,5 @@
 {
- "printWidth": 140,
+    "printWidth": 140,
     "tabWidth": 4,
     "useTabs": false,
     "arrowParens": "avoid",
@@ -21,6 +21,8 @@
     "importOrderSortSpecifiers": true,
     "importOrderGroupNamespaceSpecifiers": true,
     "importOrderCaseInsensitive": true,
-    "importOrderParserPlugins": ["decorators-legacy", "typescript"]
-
+    "importOrderParserPlugins": [
+        "decorators-legacy",
+        "typescript"
+    ]
 }

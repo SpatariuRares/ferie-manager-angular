@@ -17,6 +17,14 @@
   "calendar": {
     "holidays": "Festività",
     "working_days": "Giorni Lavorativi",
-    "select_country": "Seleziona Paese"
+    "select_country": "Seleziona Paese",
+    "selected_days": "Giorni Selezionati",
+    "total_days": "Giorni Totali",
+    "period": "Periodo"
+   },
+  "countries": {
+    "IT": "Italia",
+    "FR": "Francia",
+    "US": "Stati Uniti"
   }
  }
