@@ -1,6 +1,7 @@
 // src/app/app.routes.ts
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './features/leave-manager/components/dashboard/dashboard.component';
+import { requireProfileGuard } from './core/guards/require-profile.guard';
 
 export const routes: Routes = [
   {
@@ -14,12 +15,14 @@ export const routes: Routes = [
       },
       {
         path: 'calendar',
+        canActivate: [requireProfileGuard],
         loadComponent: () =>
           import('./features/calendar/components/calendar/calendar.component')
             .then(m => m.CalendarComponent)
       },
       {
         path: 'request',
+        canActivate: [requireProfileGuard],
         loadComponent: () =>
           import('./features/leave-manager/components/request-form/request-form.component')
             .then(m => m.RequestFormComponent)

@@ -1,7 +1,7 @@
 // src/app/features/leave-manager/components/dashboard/dashboard.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { UserConfigService } from '../../../employee-config/services/user-config.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,12 +28,28 @@ import { MatMenuModule } from '@angular/material/menu';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent {
-  constructor(private translocoService: TranslocoService) {}
+export class DashboardComponent implements OnInit {
+  hasProfile = false;
+
+  constructor(
+    private translocoService: TranslocoService,
+    private userConfigService: UserConfigService,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    // Check if user has a profile
+    this.userConfigService.getUserProfile().subscribe(profile => {
+      this.hasProfile = !!profile;
+
+      // If no profile exists and not already on profile page, navigate to profile
+      if (!this.hasProfile && !this.router.url.includes('/profile')) {
+        this.router.navigate(['/profile']);
+      }
+    });
+  }
 
   switchLanguage(lang: string) {
-    console.log('switchLanguage', lang);
-
     this.translocoService.setActiveLang(lang);
   }
 

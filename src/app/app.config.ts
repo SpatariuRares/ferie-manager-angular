@@ -1,12 +1,18 @@
-import { ApplicationConfig, isDevMode } from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
- import { TranslocoHttpLoader } from './transloco-loader';
+import { TranslocoHttpLoader } from './transloco-loader';
 import { provideTransloco } from '@ngneat/transloco';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { environment } from '../environments/environment';
+import { AppInitializerService } from './core/services/app-initializer.service';
+
+// Factory function for APP_INITIALIZER
+export function initializeApp(appInitializer: AppInitializerService) {
+  return () => appInitializer.initialize();
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +28,12 @@ export const appConfig: ApplicationConfig = {
         prodMode: environment.production
       },
       loader: TranslocoHttpLoader
-    })
+    }),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (appInitializer: AppInitializerService) => () => appInitializer.initialize(),
+      deps: [AppInitializerService],
+      multi: true
+    }
   ]
 };
