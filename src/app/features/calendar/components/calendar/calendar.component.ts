@@ -101,7 +101,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   private initializeCalendar() {
+    // Get holidays for the selected year based on current country
     this.yearHolidays = this.holidayService.getHolidays(this.selectedYear);
+
+    // Create month data
     this.months = Array.from({ length: 12 }, (_, i) => {
       return {
         name: this.getMonthName(i),
@@ -111,10 +114,16 @@ export class CalendarComponent implements OnInit, OnDestroy {
       };
     });
 
-    // Forza la detection dei cambiamenti
-    this.cdr.detectChanges();
-  }
+    // Update selections on the calendar
+    this.updateMonthsData();
 
+    // Force change detection
+    this.cdr.detectChanges();
+
+    console.log('Calendar initialized with country:', this.selectedCountry);
+    console.log('Working days:', this.currentConfig.workingDays);
+    console.log('Week starts on:', this.currentConfig.weekStartsOn);
+  }
   private getDaysInMonth(year: number, month: number): DayInfo[] {
     const days: DayInfo[] = [];
     const date = new Date(year, month, 1);

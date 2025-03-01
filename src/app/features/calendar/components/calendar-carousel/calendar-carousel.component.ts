@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -22,22 +22,36 @@ export class CalendarCarouselComponent implements OnInit {
   maxIndex = 0;
 
   ngOnInit() {
-    // Dividi i mesi in coppie
-    for (let i = 0; i < this.months.length; i += 2) {
-      this.monthPairs.push(this.months.slice(i, i + 2));
-    }
-    this.maxIndex = Math.max(0, this.months.length - 1);
-    console.log('Max index:', this.maxIndex);
-    // Debug per verificare le coppie create
-    console.log('Month pairs created:', this.monthPairs.map(pair =>
-      pair.map(m => m.name).join('-')
-    ));
+    this.processMonths();
   }
-
+  ngOnChanges(changes: SimpleChanges) {
+    // When months array changes (e.g., when country changes), rebuild the month pairs
+    if (changes['months']) {
+      this.processMonths();
+      // Reset to first page when country changes
+      this.currentIndex = 0;
+    }
+  }
   previousMonths() {
     if (this.currentIndex > 0) {
       this.currentIndex--;
     }
+  }
+   private processMonths() {
+    // Clear existing pairs
+    this.monthPairs = [];
+
+    // Split months into pairs
+    for (let i = 0; i < this.months.length; i += 2) {
+      this.monthPairs.push(this.months.slice(i, i + 2));
+    }
+
+    // Calculate max index for pagination
+    this.maxIndex = Math.max(0, this.monthPairs.length - 1);
+
+    console.log('Month pairs updated:', this.monthPairs.map(pair =>
+      pair.map(m => m.name).join('-')
+    ));
   }
 
   nextMonths() {
