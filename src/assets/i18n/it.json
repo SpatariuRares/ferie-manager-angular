@@ -32,6 +32,7 @@
     "name": "Nome",
     "country": "Paese",
     "started_this_year": "Ha iniziato a lavorare quest'anno",
+    "start_date": "Data di Inizio",
     "annual_allowance_days": "Ferie Annuali (giorni)",
     "unused_previous_year_days": "Giorni non utilizzati dall'anno precedente",
     "unused_previous_year_hours": "Ore non utilizzate dall'anno precedente",

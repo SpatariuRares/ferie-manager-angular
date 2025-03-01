@@ -37,6 +37,11 @@ export class UserConfigService {
         profile.annualAllowanceHours = profile.annualAllowanceHours || 0;
         profile.unusedPreviousYearHours = profile.unusedPreviousYearHours || 0;
 
+        // Convert string dates back to Date objects
+        if (profile.startDate) {
+          profile.startDate = new Date(profile.startDate);
+        }
+
         this.userProfile.next(profile);
       } catch (e) {
         console.error('Error parsing user profile', e);
@@ -50,7 +55,8 @@ export class UserConfigService {
       return 0;
     }
 
-    const currentMonth = new Date().getMonth(); // 0-11
+    const now = new Date();
+    const currentMonth = now.getMonth(); // 0-11
     const totalMonths = 12;
 
     // Ensure we have valid numbers
@@ -61,20 +67,51 @@ export class UserConfigService {
     let accrued = 0;
 
     if (profile.startedThisYear) {
-      // Calculate hours accrued based on the current month (assuming linear accrual)
-      // If we're in June (month 5), they've accrued (5+1)/12 of their annual allowance
-      accrued = (annualAllowance / totalMonths) * (currentMonth + 1);
+      if (profile.startDate) {
+        // Calculate months between start date and now
+        const startDate = new Date(profile.startDate);
+        const monthsWorked = (now.getFullYear() - startDate.getFullYear()) * 12 +
+                           (now.getMonth() - startDate.getMonth());
+
+        // Calculate hours accrued based on months worked
+        accrued = (annualAllowance / totalMonths) * Math.max(0, monthsWorked);
+      } else {
+        // If no start date is provided, fall back to current month calculation
+        accrued = (annualAllowance / totalMonths) * (currentMonth + 1);
+      }
     } else {
-      // If they didn't start this year, calculate based on which month we're in
-      // (assuming they accrue leave progressively throughout the year)
-      accrued = (annualAllowance / totalMonths) * (currentMonth + 1);
+      // If they didn't start this year, they get the full annual allowance
+      accrued = annualAllowance;
     }
 
     // Add unused hours from previous years
     return Math.round((accrued + unusedHours) * 10) / 10;
   }
 
-  calculateRemainingHours(profile: UserProfile): number {
-    return this.calculateAccruedHours(profile);
+  // Calculate total available hours for the year (full annual allowance or prorated + unused)
+  calculateTotalAvailableHours(profile: UserProfile): number {
+    if (!profile) {
+      return 0;
+    }
+
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const annualAllowance = profile.annualAllowanceHours || 0;
+    const unusedHours = profile.unusedPreviousYearHours || 0;
+
+    let availableAllowance = annualAllowance;
+
+    if (profile.startedThisYear && profile.startDate) {
+      const startDate = new Date(profile.startDate);
+
+      // If start date is in current year, prorate allowance
+      if (startDate.getFullYear() === currentYear) {
+        const monthsInYear = 12;
+        const monthsWorking = monthsInYear - startDate.getMonth();
+        availableAllowance = (annualAllowance / monthsInYear) * monthsWorking;
+      }
+    }
+
+    return Math.round((availableAllowance + unusedHours) * 10) / 10;
   }
 }

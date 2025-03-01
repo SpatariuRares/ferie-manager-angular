@@ -8,9 +8,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { TranslocoPipe } from '@ngneat/transloco';
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { UserConfigService } from '../../services/user-config.service';
 import { UserProfile } from '../../../../core/models/user-profile.model';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-user-profile',
@@ -25,7 +26,9 @@ import { UserProfile } from '../../../../core/models/user-profile.model';
     MatSelectModule,
     MatCheckboxModule,
     MatCardModule,
-    TranslocoPipe
+    MatNativeDateModule,
+    TranslocoPipe,
+    MatDatepickerModule,
   ],
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
@@ -44,6 +47,8 @@ export class UserProfileComponent implements OnInit {
     private userConfigService: UserConfigService
   ) {
     this.profileForm = this.createForm();
+    this.setupStartDateValidation();
+
   }
 
   ngOnInit(): void {
@@ -53,6 +58,7 @@ export class UserProfileComponent implements OnInit {
         this.profileForm.patchValue({
           name: profile.name,
           startedThisYear: profile.startedThisYear,
+          startDate: profile.startDate ? new Date(profile.startDate) : null,
           country: profile.country,
           annualAllowanceDays: this.convertHoursToDays(profile.annualAllowanceHours),
           unusedPreviousYearHours: profile.unusedPreviousYearHours
@@ -66,9 +72,32 @@ export class UserProfileComponent implements OnInit {
     return this.fb.group({
       name: ['', Validators.required],
       startedThisYear: [false],
+      startDate: [null],
       annualAllowanceDays: [26, [Validators.required, Validators.min(0)]], // Default to 26 days
       unusedPreviousYearHours: [0, [Validators.required, Validators.min(0)]],
       country: ['IT', Validators.required]
+    });
+  }
+
+  private setupStartDateValidation(): void {
+    // Make startDate required when startedThisYear is checked
+    this.profileForm.get('startedThisYear')?.valueChanges.subscribe(startedThisYear => {
+      const startDateControl = this.profileForm.get('startDate');
+
+      if (startedThisYear) {
+        startDateControl?.setValidators([Validators.required]);
+
+        // Set default date to January 1st of current year if not already set
+        if (!startDateControl?.value) {
+          const currentYear = new Date().getFullYear();
+          startDateControl?.setValue(new Date(currentYear, 0, 1)); // January 1st
+        }
+      } else {
+        startDateControl?.clearValidators();
+        startDateControl?.setValue(null);
+      }
+
+      startDateControl?.updateValueAndValidity();
     });
   }
 
@@ -80,6 +109,7 @@ export class UserProfileComponent implements OnInit {
       const profile: UserProfile = {
         name: formValue.name,
         startedThisYear: formValue.startedThisYear,
+        startDate: formValue.startedThisYear ? formValue.startDate : undefined,
         country: formValue.country,
         annualAllowanceHours: this.convertDaysToHours(formValue.annualAllowanceDays),
         unusedPreviousYearHours: formValue.unusedPreviousYearHours
@@ -99,14 +129,25 @@ export class UserProfileComponent implements OnInit {
 
     // If started this year, prorate the annual allowance based on month
     let annualAllowanceToUse = annualAllowanceDays;
-    if (formValue.startedThisYear) {
-      const currentMonth = new Date().getMonth(); // 0-11
-      annualAllowanceToUse = (annualAllowanceDays / 12) * (12 - currentMonth);
+
+    if (formValue.startedThisYear && formValue.startDate) {
+      const now = new Date();
+      const startDate = new Date(formValue.startDate);
+      const currentYear = now.getFullYear();
+
+      // Ensure we're working with dates in the current year
+      if (startDate.getFullYear() === currentYear) {
+        // Calculate months between start date and end of year
+        const monthsWorking = 12 - startDate.getMonth();
+        // Prorate annual allowance based on months working
+        annualAllowanceToUse = (annualAllowanceDays / 12) * monthsWorking;
+      }
     }
 
     // Calculate total available days for the whole year
     this.totalAvailableDays = Math.round((annualAllowanceToUse + unusedPreviousYearHours) * 10) / 10;
     this.totalAvailableHours = this.convertDaysToHours(this.totalAvailableDays);
+
   }
 
   // Convert between days and hours, returning 0 for invalid values
@@ -133,5 +174,9 @@ export class UserProfileComponent implements OnInit {
   getUnusedPreviousDays(): number {
     const days = this.profileForm.value.unusedPreviousYearHours;
     return days || 0;
+  }
+
+  onStartDateChange(): void {
+    this.calculateTotalAvailable();
   }
 }
