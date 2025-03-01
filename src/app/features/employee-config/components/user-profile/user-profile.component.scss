@@ -1,0 +1,47 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/mixins';
+
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: map-get($spacing, 'lg');
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: map-get($spacing, 'md');
+
+  @include media-breakpoint-up('md') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.leave-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: map-get($spacing, 'md');
+  margin: map-get($spacing, 'lg') 0;
+}
+
+.metric-card {
+  background-color: $color-surface;
+  text-align: center;
+
+  mat-card-header {
+    justify-content: center;
+    color: $primary;
+  }
+
+  .metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    padding: map-get($spacing, 'md');
+  }
+}
+
+.form-actions {
+  margin-top: map-get($spacing, 'lg');
+  display: flex;
+  justify-content: flex-end;
+}

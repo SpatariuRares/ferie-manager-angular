@@ -12,9 +12,6 @@
       <button mat-icon-button [matMenuTriggerFor]="languageMenu">
         <mat-icon>language</mat-icon>
       </button>
-      <button mat-icon-button [matMenuTriggerFor]="userMenu">
-        <mat-icon>account_circle</mat-icon>
-      </button>
     </div>
   </mat-toolbar>
 
@@ -28,6 +25,10 @@
         <a mat-list-item routerLink="request" routerLinkActive="active">
           <mat-icon matListItemIcon>event</mat-icon>
           {{ 'dashboard.menu.request' | transloco }}
+        </a>
+        <a mat-list-item routerLink="profile" routerLinkActive="active">
+          <mat-icon matListItemIcon>person</mat-icon>
+          {{ 'dashboard.menu.profile' | transloco }}
         </a>
       </mat-nav-list>
     </mat-sidenav>
@@ -47,17 +48,6 @@
     <button mat-menu-item (click)="switchLanguage('en')">
       <mat-icon>{{ getCurrentLang() === 'en' ? 'check' : '' }}</mat-icon>
       <span>English</span>
-    </button>
-  </mat-menu>
-
-  <mat-menu #userMenu="matMenu">
-    <button mat-menu-item>
-      <mat-icon>person</mat-icon>
-      <span>{{ 'dashboard.menu.profile' | transloco }}</span>
-    </button>
-    <button mat-menu-item>
-      <mat-icon>logout</mat-icon>
-      <span>{{ 'dashboard.menu.logout' | transloco }}</span>
     </button>
   </mat-menu>
 </div>

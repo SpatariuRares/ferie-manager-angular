@@ -23,6 +23,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/leave-manager/components/request-form/request-form.component')
             .then(m => m.RequestFormComponent)
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./features/employee-config/components/user-profile/user-profile.component')
+            .then(m => m.UserProfileComponent)
       }
     ]
   }

@@ -23,8 +23,30 @@
     "period": "Period"
   },
   "countries": {
-    "IT": "Italia",
-    "FR": "Francia",
-    "US": "Stati Uniti"
+    "IT": "Italy",
+    "FR": "France",
+    "US": "United States"
+  },
+  "profile": {
+    "title": "User Profile",
+    "name": "Name",
+    "email": "Email",
+    "start_date": "Employment Start Date",
+    "annual_allowance": "Annual Leave Allowance",
+    "used_leave": "Used Leave Days",
+    "carried_over": "Carried Over Days",
+    "preferred_language": "Preferred Language",
+    "accrued_leave": "Accrued Leave",
+    "remaining_leave": "Remaining Leave",
+    "save": "Save Profile",
+    "errors": {
+      "name_required": "Name is required",
+      "email_invalid": "Invalid email format",
+      "date_required": "Start date is required",
+      "allowance_required": "Annual allowance is required",
+      "allowance_min": "Allowance must be a positive number",
+      "used_leave_min": "Used leave cannot be negative",
+      "carried_over_min": "Carried over days cannot be negative"
+    }
   }
 }

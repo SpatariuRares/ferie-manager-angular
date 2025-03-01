@@ -1,7 +1,7 @@
- {
+{
   "dashboard": {
     "title": "Gestione Ferie",
-   "menu": {
+    "menu": {
       "calendar": "Calendario",
       "request": "Nuova Richiesta",
       "profile": "Profilo",
@@ -21,10 +21,32 @@
     "selected_days": "Giorni Selezionati",
     "total_days": "Giorni Totali",
     "period": "Periodo"
-   },
+  },
   "countries": {
     "IT": "Italia",
     "FR": "Francia",
     "US": "Stati Uniti"
+  },
+  "profile": {
+    "title": "Profilo Utente",
+    "name": "Nome",
+    "email": "Email",
+    "start_date": "Data di Inizio Impiego",
+    "annual_allowance": "Giorni di Ferie Annuali",
+    "used_leave": "Giorni di Ferie Utilizzati",
+    "carried_over": "Giorni Riportati",
+    "preferred_language": "Lingua Preferita",
+    "accrued_leave": "Ferie Maturate",
+    "remaining_leave": "Ferie Rimanenti",
+    "save": "Salva Profilo",
+    "errors": {
+      "name_required": "Il nome è obbligatorio",
+      "email_invalid": "Formato email non valido",
+      "date_required": "La data di inizio è obbligatoria",
+      "allowance_required": "I giorni di ferie annuali sono obbligatori",
+      "allowance_min": "I giorni di ferie devono essere un numero positivo",
+      "used_leave_min": "I giorni utilizzati non possono essere negativi",
+      "carried_over_min": "I giorni riportati non possono essere negativi"
+    }
   }
- }
+}

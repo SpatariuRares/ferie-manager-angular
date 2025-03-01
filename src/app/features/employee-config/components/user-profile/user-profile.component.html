@@ -1,0 +1,94 @@
+<div class="profile-container">
+  <h2 class="mb-4">{{ 'profile.title' | transloco }}</h2>
+
+  <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+    <div class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profile.name' | transloco }}</mat-label>
+        <input matInput formControlName="name" required>
+        <mat-error *ngIf="profileForm.get('name')?.hasError('required')">
+          {{ 'profile.errors.name_required' | transloco }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profile.email' | transloco }}</mat-label>
+        <input matInput formControlName="email" type="email">
+        <mat-error *ngIf="profileForm.get('email')?.hasError('email')">
+          {{ 'profile.errors.email_invalid' | transloco }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profile.start_date' | transloco }}</mat-label>
+        <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" required>
+        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+        <mat-error *ngIf="profileForm.get('startDate')?.hasError('required')">
+          {{ 'profile.errors.date_required' | transloco }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profile.annual_allowance' | transloco }}</mat-label>
+        <input matInput type="number" formControlName="annualAllowance" required>
+        <mat-error *ngIf="profileForm.get('annualAllowance')?.hasError('required')">
+          {{ 'profile.errors.allowance_required' | transloco }}
+        </mat-error>
+        <mat-error *ngIf="profileForm.get('annualAllowance')?.hasError('min')">
+          {{ 'profile.errors.allowance_min' | transloco }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profile.used_leave' | transloco }}</mat-label>
+        <input matInput type="number" formControlName="usedLeave" required>
+        <mat-error *ngIf="profileForm.get('usedLeave')?.hasError('min')">
+          {{ 'profile.errors.used_leave_min' | transloco }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profile.carried_over' | transloco }}</mat-label>
+        <input matInput type="number" formControlName="carriedOver" required>
+        <mat-error *ngIf="profileForm.get('carriedOver')?.hasError('min')">
+          {{ 'profile.errors.carried_over_min' | transloco }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profile.preferred_language' | transloco }}</mat-label>
+        <mat-select formControlName="preferredLanguage" (selectionChange)="changeLanguage($event.value)">
+          <mat-option value="en">English</mat-option>
+          <mat-option value="it">Italiano</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="leave-metrics">
+      <mat-card class="metric-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'profile.accrued_leave' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="metric-value">{{ accrued | number:'1.1-1' }}</div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="metric-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'profile.remaining_leave' | transloco }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="metric-value">{{ remaining | number:'1.1-1' }}</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!profileForm.valid">
+        {{ 'profile.save' | transloco }}
+      </button>
+    </div>
+  </form>
+</div>
