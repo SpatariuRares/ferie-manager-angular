@@ -1,0 +1,60 @@
+{
+  "dashboard": {
+    "title": "Gestione Ferie",
+    "menu": {
+      "calendar": "Calendario",
+      "request": "Nuova Richiesta",
+      "profile": "Profilo",
+      "logout": "Esci"
+    },
+    "overview": {
+      "title": "Panoramica",
+      "leaveBalance": "Bilancio Ferie",
+      "pendingRequests": "Richieste in Sospeso",
+      "upcomingLeave": "Prossime Ferie"
+    }
+  },
+  "calendar": {
+    "holidays": "Festività",
+    "working_days": "Giorni Lavorativi",
+    "select_country": "Seleziona Paese",
+    "selected_days": "Giorni Selezionati",
+    "total_days": "Giorni Totali",
+    "period": "Periodo",
+    "save_request": "Salva Richiesta",
+    "available_leave": "Giorni di ferie ancora da impostare",
+    "used_leave": "Ferie impostate",
+    "leave_table": "Tabella con le ferie impostate",
+    "start_date": "Data inizio",
+    "end_date": "Data fine",
+    "no_leave_requests": "Nessuna richiesta di ferie impostata",
+    "days": "giorni",
+    "hours": "ore"
+  },
+  "countries": {
+    "IT": "Italia",
+    "FR": "Francia",
+    "US": "Stati Uniti"
+  },
+  "profile": {
+    "title": "Profilo Utente",
+    "name": "Nome",
+    "country": "Paese",
+    "started_this_year": "Ha iniziato a lavorare quest'anno",
+    "start_date": "Data di Inizio",
+    "annual_allowance_days": "Ferie Annuali (giorni)",
+    "unused_previous_year_days": "Giorni non utilizzati dall'anno precedente",
+    "unused_previous_year_hours": "Ore non utilizzate dall'anno precedente",
+    "total_available_days": "Giorni di Ferie Disponibili per Quest'Anno",
+    "equivalent_hours": "Equivalente in ore",
+    "equivalent_days": "Equivalente in giorni",
+    "save": "Salva Profilo",
+    "errors": {
+      "name_required": "Il nome è obbligatorio",
+      "country_required": "Il paese è obbligatorio",
+      "allowance_required": "I giorni di ferie annuali sono obbligatori",
+      "allowance_min": "I giorni di ferie devono essere un numero positivo",
+      "unused_days_min": "I giorni non utilizzati non possono essere negativi"
+    }
+  }
+}

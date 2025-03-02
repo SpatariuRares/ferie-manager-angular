@@ -1,3 +1,4 @@
+@use "sass:math";
 @import 'variables';
 @import 'mixins';
 
@@ -47,8 +48,8 @@
 }
 
 @mixin make-col($size, $columns: 12) {
-  flex: 0 0 percentage($size / $columns);
-  max-width: percentage($size / $columns);
+  flex: 0 0 percentage(math.div($size, $columns));
+  max-width: percentage(math.div($size, $columns));
 }
 
 .col {

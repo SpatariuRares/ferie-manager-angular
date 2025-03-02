@@ -165,9 +165,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     // Force change detection
     this.cdr.detectChanges();
 
-    console.log('Calendar initialized with country:', this.selectedCountry);
-    console.log('Working days:', this.currentConfig.workingDays);
-    console.log('Week starts on:', this.currentConfig.weekStartsOn);
   }
 
   private getDaysInMonth(year: number, month: number): DayInfo[] {

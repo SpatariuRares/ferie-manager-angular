@@ -3,8 +3,6 @@ import {
   provideTransloco,
   Translation,
   TranslocoLoader,
-  TRANSLOCO_CONFIG,
-  TRANSLOCO_LOADER,
 } from '@ngneat/transloco';
 import { environment } from '../../environments/environment';
 
@@ -20,7 +18,7 @@ export const provideTranslation = () => {
   return [
     provideTransloco({
       config: {
-        availableLangs: ['it', 'en'],
+        availableLangs: ['it', 'en', 'fr', 'de', 'es'],
         defaultLang: 'it',
         fallbackLang: 'it',
         reRenderOnLangChange: true,

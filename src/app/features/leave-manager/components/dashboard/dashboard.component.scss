@@ -1,42 +1,95 @@
 @import '../../../../styles/variables';
 @import '../../../../styles/mixins';
 
-.dashboard-container {
-  @include flex-column;
+.page-container {
+  display: flex;
+  flex-direction: column;
   height: 100vh;
 }
 
+// Toolbar styling
 mat-toolbar {
   z-index: map-get($z-index, 'header');
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
 
-mat-sidenav-container {
-  flex: 1;
-}
-
-.active {
-  background-color: rgba($primary, 0.1);
-  border-left: 3px solid $primary;
-}
-
-mat-sidenav {
-  border-right: 1px solid $color-border;
-  width: 260px;
-
-  @include media-breakpoint-down('md') {
-    width: 200px;
+  .toolbar-content {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 map-get($spacing, 'md');
   }
 }
 
-.mat-list-item {
-  &.active {
-    .mat-icon {
-      color: $primary;
+// Content container
+.content-container {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+// Content wrapper with max-width
+.content-wrapper {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 map-get($spacing, 'md');
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+// Make the tab group fill the available space
+::ng-deep .mat-mdc-tab-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  .mat-mdc-tab-body-wrapper {
+    flex: 1;
+    overflow-y: auto;
+  }
+}
+
+// Custom styling for tab labels
+.tab-label-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 100px;
+  padding: map-get($spacing, 'xs') 0;
+
+  mat-icon {
+    margin-bottom: map-get($spacing, 'xs');
+  }
+
+  span {
+    font-size: $font-size-sm;
+  }
+}
+
+// Custom styling for the tab header
+::ng-deep .mat-mdc-tab-header {
+  background-color: $color-surface;
+  border-bottom: 1px solid $color-border;
+
+  .mat-mdc-tab {
+    &.mdc-tab--active {
+      .mdc-tab__text-label {
+        color: $primary;
+      }
+
+      .mat-icon {
+        color: $primary;
+      }
     }
   }
+}
 
-  &:hover:not(.active) {
-    background-color: rgba($color-border, 0.2);
-  }
+// Ensure tab content has proper spacing
+::ng-deep .mat-mdc-tab-body-content {
+  padding: map-get($spacing, 'md') 0;
 }
