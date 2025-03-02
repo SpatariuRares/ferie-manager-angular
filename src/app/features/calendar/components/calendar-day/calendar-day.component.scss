@@ -10,12 +10,12 @@
 
   // Utilizzo del mixin per i vari stati del giorno
   &.day-normal { @include calendar-day-variant('normal'); }
+  &.day-bridge { @include calendar-day-variant('bridge'); }
+  &.day-leave { @include calendar-day-variant('leave'); }
   &.day-weekend { @include calendar-day-variant('weekend'); }
   &.day-holiday { @include calendar-day-variant('holiday'); }
   &.day-selected { @include calendar-day-variant('selected'); }
-  &.day-bridge { @include calendar-day-variant('bridge'); }
   &.day-today { @include calendar-day-variant('today'); }
-  &.day-leave { @include calendar-day-variant('leave'); }
 
   // Stato di selezione speciale
   &.day-selected {
