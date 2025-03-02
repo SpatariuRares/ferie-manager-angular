@@ -3,9 +3,12 @@ import {
   provideTransloco,
   Translation,
   TranslocoLoader,
+  TranslocoService
 } from '@ngneat/transloco';
+import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
+@Injectable({ providedIn: 'root' })
 export class TranslocoHttpLoader implements TranslocoLoader {
   constructor(private http: HttpClient) {}
 
@@ -14,7 +17,7 @@ export class TranslocoHttpLoader implements TranslocoLoader {
   }
 }
 
-export const provideTranslation = () => {
+export function provideTranslation() {
   return [
     provideTransloco({
       config: {
@@ -27,4 +30,4 @@ export const provideTranslation = () => {
       loader: TranslocoHttpLoader
     }),
   ];
-};
+}

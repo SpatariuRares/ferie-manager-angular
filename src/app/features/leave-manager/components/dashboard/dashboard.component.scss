@@ -73,7 +73,7 @@ mat-toolbar {
 
 // Custom styling for the tab header
 ::ng-deep .mat-mdc-tab-header {
-  background-color: $color-surface;
+  // background-color: $color-surface;
   border-bottom: 1px solid $color-border;
 
   .mat-mdc-tab {

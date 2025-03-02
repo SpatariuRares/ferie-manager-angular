@@ -1,17 +1,12 @@
 {
+  "language": {
+    "name": "Français"
+  },
   "dashboard": {
     "title": "Gestion des Congés",
     "menu": {
       "calendar": "Calendrier",
-      "request": "Nouvelle Demande",
-      "profile": "Profil",
-      "logout": "Déconnexion"
-    },
-    "overview": {
-      "title": "Aperçu",
-      "leaveBalance": "Solde de Congés",
-      "pendingRequests": "Demandes en Attente",
-      "upcomingLeave": "Congés à Venir"
+      "profile": "Profil"
     }
   },
   "calendar": {
@@ -19,9 +14,17 @@
     "working_days": "Jours Ouvrables",
     "select_country": "Sélectionner un Pays",
     "selected_days": "Jours Sélectionnés",
-    "total_days": "Jours Totaux",
+    "total_days": "Nombre Total de Jours",
     "period": "Période",
-    "save_request": "Enregistrer la Demande"
+    "save_request": "Enregistrer la Demande",
+    "available_leave": "Jours de congé disponibles",
+    "used_leave": "Congés utilisés",
+    "leave_table": "Tableau des demandes de congé",
+    "start_date": "Date de début",
+    "end_date": "Date de fin",
+    "no_leave_requests": "Aucune demande de congé définie",
+    "days": "jours",
+    "hours": "heures"
   },
   "countries": {
     "IT": "Italie",
@@ -75,18 +78,19 @@
     "name": "Nom",
     "country": "Pays",
     "started_this_year": "A commencé à travailler cette année",
-    "start_date": "Date de Début",
-    "annual_allowance_days": "Congés Annuels (jours)",
-    "unused_previous_year_days": "Heures non utilisées de l'Année Précédente",
-    "total_available_days": "Jours Disponibles Totaux pour Cette Année",
+    "start_date": "Date de début",
+    "annual_allowance_days": "Congés annuels (jours)",
+    "unused_previous_year_days": "Jours non utilisés de l'année précédente",
+    "unused_previous_year_hours": "Heures non utilisées de l'année précédente",
+    "total_available_days": "Total des jours disponibles pour cette année",
     "equivalent_hours": "Équivalent en heures",
     "equivalent_days": "Équivalent en jours",
     "save": "Enregistrer le Profil",
     "errors": {
       "name_required": "Le nom est obligatoire",
       "country_required": "Le pays est obligatoire",
-      "allowance_required": "Les congés annuels sont obligatoires",
-      "allowance_min": "Les congés doivent être un nombre positif",
+      "allowance_required": "Les jours de congés annuels sont obligatoires",
+      "allowance_min": "Les jours de congés doivent être un nombre positif",
       "unused_days_min": "Les jours non utilisés ne peuvent pas être négatifs"
     }
   }

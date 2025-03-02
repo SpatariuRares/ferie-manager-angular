@@ -11,6 +11,7 @@ import { MatTabNav, MatTabNavPanel, MatTabsModule } from '@angular/material/tabs
 import { UserConfigService } from '../../../employee-config/services/user-config.service';
 import { CalendarComponent } from '../../../calendar/components/calendar/calendar.component';
 import { UserProfileComponent } from '../../../employee-config/components/user-profile/user-profile.component';
+ import { TranslationService } from '../../../../i18n/translation.service';
 
 
 interface LanguageOption {
@@ -41,17 +42,8 @@ export class DashboardComponent implements OnInit {
   selectedTabIndex = 0;
   availableLanguages: LanguageOption[] = [];
 
-  private languageNames: Record<string, string> = {
-    'en': 'English',
-    'it': 'Italiano',
-    'fr': 'Français',
-    'de': 'Deutsch',
-    'es': 'Español'
-    // Add more languages as needed
-  };
-
   constructor(
-    private translocoService: TranslocoService,
+    private translationService: TranslationService,
     private userConfigService: UserConfigService,
     private router: Router
   ) {}
@@ -67,31 +59,10 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    this.loadAvailableLanguages();
+    this.translationService.getAvailableLanguages().subscribe(
+      languages => this.availableLanguages = languages
+    );
   }
-
-  loadAvailableLanguages() {
-    // Get available languages from Transloco
-    const langs = this.translocoService.getAvailableLangs();
-
-    // Convert to array of LanguageOption objects
-    this.availableLanguages = langs.map(lang => {
-      // Handle if lang is a string or object with code property
-      const langCode = typeof lang === 'string' ? lang : lang.id;
-      console.log(langCode);
-      return {
-        code: langCode,
-        name: this.getLanguageName(langCode)
-      };
-    });
-
-  }
-
-  getLanguageName(langCode: string): string {
-    // Return the mapped language name or use the code if not found
-    return this.languageNames[langCode] || langCode;
-  }
-
 
   onTabChange(index: number) {
     // If user has no profile and is trying to access calendar tab, enforce profile tab
@@ -101,10 +72,10 @@ export class DashboardComponent implements OnInit {
   }
 
   switchLanguage(lang: string) {
-    this.translocoService.setActiveLang(lang);
+    this.translationService.setLanguage(lang);
   }
 
   getCurrentLang(): string {
-    return this.translocoService.getActiveLang();
+    return this.translationService.getCurrentLang();
   }
 }

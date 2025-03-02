@@ -1,17 +1,12 @@
 {
+  "language": {
+    "name": "deutsche"
+  },
   "dashboard": {
     "title": "Urlaubsverwaltung",
     "menu": {
       "calendar": "Kalender",
-      "request": "Neuer Antrag",
-      "profile": "Profil",
-      "logout": "Abmelden"
-    },
-    "overview": {
-      "title": "Übersicht",
-      "leaveBalance": "Urlaubskonto",
-      "pendingRequests": "Ausstehende Anträge",
-      "upcomingLeave": "Bevorstehender Urlaub"
+      "profile": "Profil"
     }
   },
   "calendar": {
@@ -21,7 +16,15 @@
     "selected_days": "Ausgewählte Tage",
     "total_days": "Gesamttage",
     "period": "Zeitraum",
-    "save_request": "Antrag speichern"
+    "save_request": "Antrag speichern",
+    "available_leave": "Verfügbare Urlaubstage",
+    "used_leave": "Genutzter Urlaub",
+    "leave_table": "Urlaubsanträge Tabelle",
+    "start_date": "Startdatum",
+    "end_date": "Enddatum",
+    "no_leave_requests": "Keine Urlaubsanträge eingestellt",
+    "days": "Tage",
+    "hours": "Stunden"
   },
   "countries": {
     "IT": "Italien",
@@ -77,7 +80,8 @@
     "started_this_year": "Hat dieses Jahr angefangen zu arbeiten",
     "start_date": "Startdatum",
     "annual_allowance_days": "Jährlicher Urlaub (Tage)",
-    "unused_previous_year_days": "Nicht genutzte Stunden aus dem Vorjahr",
+    "unused_previous_year_days": "Nicht genutzte Tage aus dem Vorjahr",
+    "unused_previous_year_hours": "Nicht genutzte Stunden aus dem Vorjahr",
     "total_available_days": "Insgesamt verfügbare Tage für dieses Jahr",
     "equivalent_hours": "Entspricht in Stunden",
     "equivalent_days": "Entspricht in Tagen",
@@ -85,8 +89,8 @@
     "errors": {
       "name_required": "Name ist erforderlich",
       "country_required": "Land ist erforderlich",
-      "allowance_required": "Jährlicher Urlaub ist erforderlich",
-      "allowance_min": "Urlaub muss eine positive Zahl sein",
+      "allowance_required": "Jährliche Urlaubstage sind erforderlich",
+      "allowance_min": "Urlaubstage müssen eine positive Zahl sein",
       "unused_days_min": "Nicht genutzte Tage dürfen nicht negativ sein"
     }
   }

@@ -1,18 +1,13 @@
 {
+  "language": {
+    "name": "Italiano"
+  },
   "dashboard": {
     "title": "Gestione Ferie",
     "menu": {
       "calendar": "Calendario",
-      "request": "Nuova Richiesta",
-      "profile": "Profilo",
-      "logout": "Esci"
-    },
-    "overview": {
-      "title": "Panoramica",
-      "leaveBalance": "Bilancio Ferie",
-      "pendingRequests": "Richieste in Sospeso",
-      "upcomingLeave": "Prossime Ferie"
-    }
+      "profile": "Profilo"
+      }
   },
   "calendar": {
     "holidays": "Festività",
