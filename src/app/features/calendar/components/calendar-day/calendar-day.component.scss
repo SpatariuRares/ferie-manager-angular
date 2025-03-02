@@ -32,6 +32,13 @@
       border-color: $primary;
     }
   }
+
+  &.day-bridge {
+    background-color: $calendar-day-bridge;
+    border: 2px solid darken($calendar-day-bridge, 15%);
+    color: darken($calendar-day-bridge, 50%);
+  }
+
   &.day-leave {
     background-color: $calendar-day-leave;
     border: 1px solid darken($calendar-day-leave, 10%);
@@ -50,11 +57,7 @@
   }
 
 
-  &.day-bridge {
-    background-color: $calendar-day-bridge;
-    border: 2px solid darken($calendar-day-bridge, 15%);
-    color: darken($calendar-day-bridge, 50%);
-  }
+
 
   &.day-selected {
      background-color: $calendar-day-selected;

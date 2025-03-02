@@ -3,118 +3,241 @@
 
 :host {
   display: block;
-  padding: map-get($spacing, 'md');
 }
 
-.calendar {
-  &-container {
-    background-color: $color-background;
-  }
+.calendar-container {
+  background-color: white;
+  max-width: 1100px;
+  margin: 0 auto;
+}
 
-  &-controls {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background-color: $color-surface;
-    border-bottom: 1px solid $color-border;
-    padding: map-get($spacing, 'md');
-    margin-bottom: map-get($spacing, 'md');
-  }
+// Sezione superiore con selettori anno e paese
+.calendar-top-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
 
-  &-grid {
-    display: grid;
-    gap: map-get($spacing, 'md');
+.year-toggle-container {
+  display: flex;
 
-    @include media-breakpoint-up('sm') {
-      grid-template-columns: repeat(2, 1fr);
+  button {
+    min-width: 80px;
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    cursor: pointer;
+
+    &:first-child {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
     }
 
-    @include media-breakpoint-up('lg') {
-      grid-template-columns: repeat(4, 1fr);
+    &:last-child {
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
     }
-  }
 
-  &-month {
-    background-color: $color-surface;
-    border-radius: map-get($spacing, 'sm');
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-
-    &-header {
-      padding: map-get($spacing, 'sm');
-      background-color: $primary;
+    &.selected {
+      background-color: #9e9e9e;
       color: white;
     }
-
-    &-content {
-      padding: map-get($spacing, 'sm');
-    }
-  }
-
-  &-weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-    font-weight: 500;
-    margin-bottom: map-get($spacing, 'sm');
-
-    .weekend {
-      color: $warn;
-    }
-  }
-
-  &-days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: map-get($spacing, 'xs');
   }
 }
 
+.country-selector {
+  mat-form-field {
+    width: 200px;
+  }
+}
+
+// Sezione carousel
+.calendar-carousel-section {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+// Sezioni informative
+.leave-info-section {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.section-header {
+  background-color: $primary;
+  color: white;
+  padding: 15px 20px;
+
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+  }
+}
+
+.leave-count-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+}
+
+.leave-count {
+  text-align: center;
+
+  .count-number {
+    font-size: 36px;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .count-label {
+    font-size: 16px;
+    color: #666;
+    margin-top: 5px;
+  }
+
+  .hours-detail {
+    font-size: 14px;
+    color: #888;
+    margin-top: 5px;
+  }
+}
+
+// Tabella delle ferie
+.leave-table-section {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.leave-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+
+  th {
+    font-weight: 500;
+    color: #333;
+  }
+
+  td {
+    color: #555;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  .no-data {
+    text-align: center;
+    padding: 30px;
+    color: #888;
+  }
+}
+
+// Stili per i giorni del calendario
 .calendar-day {
-  @include calendar-day-base;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  margin: 2px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
 
-  &.day-normal {
-    background-color: $calendar-day-normal;
+  &.weekend {
+    background-color: #FFF3E0;
+    color: #FF6F00;
   }
 
-  &.day-weekend {
-    background-color: $calendar-day-weekend;
+  &.holiday {
+    background-color: #F8BBD0;
+    color: #C2185B;
   }
 
-  &.day-holiday {
-    background-color: $calendar-day-holiday;
+  &.selected {
+    background-color: #B39DDB;
+    color: white;
   }
 
-  &.day-selected {
-    background-color: $calendar-day-selected;
-  }
-
-  &.day-bridge {
-    background-color: $calendar-day-bridge;
-    border: 2px solid darken($calendar-day-bridge, 10%);
-  }
-
-  &.day-today {
-    background-color: $calendar-day-today;
+  &.today {
+    background-color: $primary;
+    color: white;
     font-weight: bold;
   }
 
-  &.day-leave {
-    background-color: $calendar-day-leave;
+  &.normal {
+    background-color: #E0F7FA;
+    color: #333;
+  }
+
+  &.leave {
+    background-color: #FFB74D;
+    color: #333;
   }
 }
 
-.holiday-indicator {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  color: $warn;
-  font-size: 0.75rem;
+// Layout responsive
+@media (max-width: 768px) {
+  .calendar-top-section {
+    flex-direction: column;
+    gap: 15px;
+
+    .year-toggle-container, .country-selector {
+      width: 100%;
+    }
+  }
+
+  .leave-table {
+    th, td {
+      padding: 10px 15px;
+    }
+
+    th:nth-child(3), td:nth-child(3),
+    th:nth-child(4), td:nth-child(4) {
+      display: none;
+    }
+  }
 }
 
-.holiday-list,
-.selected-days {
-  max-width: 42rem;
-  margin: map-get($spacing, 'lg') auto;
-}
+// Stili per i bottoni del carousel
+.nav-button {
+  background-color: $primary;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 
+  &:disabled {
+    background-color: #ccc;
+  }
+}

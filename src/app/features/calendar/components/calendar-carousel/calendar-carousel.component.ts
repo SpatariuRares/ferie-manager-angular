@@ -20,18 +20,37 @@ export class CalendarCarouselComponent implements OnInit {
   monthPairs: MonthData[][] = [];
   currentIndex = 0;
   maxIndex = 0;
+  private previousMonthsLength = 0;
 
   ngOnInit() {
     this.processMonths();
   }
+
   ngOnChanges(changes: SimpleChanges) {
-    // When months array changes (e.g., when country changes), rebuild the month pairs
+    // Quando months array cambia
     if (changes['months']) {
+      // Salva l'indice corrente prima di processare i mesi
+      const previousIndex = this.currentIndex;
+      const isCompleteChange =
+        !this.previousMonthsLength ||
+        changes['months'].previousValue?.length !== changes['months'].currentValue?.length;
+
       this.processMonths();
-      // Reset to first page when country changes
-      this.currentIndex = 0;
+
+      // Ripristina l'indice precedente solo se non è un cambio completo
+      if (!isCompleteChange) {
+        this.currentIndex = previousIndex;
+      } else {
+        // Se è un cambio completo (ad es. cambio paese), resetta a 0
+        this.currentIndex = 0;
+      }
+
+      this.previousMonthsLength = this.months.length;
     }
   }
+
+
+
   previousMonths() {
     if (this.currentIndex > 0) {
       this.currentIndex--;

@@ -1,65 +1,100 @@
 <div class="calendar-container">
-  <div class="controls mb-4 flex gap-4 items-center">
-    <mat-button-toggle-group [(ngModel)]="selectedYear" (change)="onYearChange()">
-      <mat-button-toggle [value]="currentYear">{{ currentYear }}</mat-button-toggle>
-      <mat-button-toggle [value]="currentYear + 1">{{ currentYear + 1 }}</mat-button-toggle>
-    </mat-button-toggle-group>
+  <!-- Contenitore principale del calendario con controlli -->
+  <div class="calendar-top-section mb-4">
+    <div class="year-toggle-container">
+      <button mat-button [class.selected]="selectedYear === currentYear" (click)="selectedYear = currentYear; onYearChange()">
+        {{ currentYear }}
+      </button>
+      <button mat-button [class.selected]="selectedYear === currentYear + 1" (click)="selectedYear = currentYear + 1; onYearChange()">
+        {{ currentYear + 1 }}
+      </button>
+    </div>
 
-    <mat-form-field>
-      <mat-label>{{ 'calendar.select_country' | transloco }}</mat-label>
-      <mat-select [(ngModel)]="selectedCountry" (selectionChange)="onCountryChange()">
-        <mat-option *ngFor="let country of availableCountries" [value]="country">
-          {{ 'countries.' + country | transloco }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="country-selector">
+      <mat-form-field appearance="outline">
+        <mat-label>Seleziona Paese</mat-label>
+        <mat-select [(ngModel)]="selectedCountry" (selectionChange)="onCountryChange()">
+          <mat-option *ngFor="let country of availableCountries" [value]="country">
+            {{ 'countries.' + country | transloco }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </div>
 
-  <app-calendar-carousel
-    [months]="months"
-    [weekDays]="weekDays"
-    (daySelected)="onDaySelected($event)">
-  </app-calendar-carousel>
-
-  <div class="holiday-list mt-6">
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ 'calendar.holidays' | transloco }} {{ selectedYear }}
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <mat-list>
-        <mat-list-item *ngFor="let holiday of yearHolidays">
-          <span class="font-medium">{{ formatDate(holiday.date)+' '}}</span>
-          <span class="ml-4">{{ holiday.name }}</span>
-        </mat-list-item>
-      </mat-list>
-    </mat-expansion-panel>
+  <!-- Carousel dei mesi -->
+  <div class="calendar-carousel-section">
+    <app-calendar-carousel
+      [months]="months"
+      [weekDays]="weekDays"
+      (daySelected)="onDaySelected($event)">
+    </app-calendar-carousel>
   </div>
 
-  <div *ngIf="selectedDays.length > 0" class="selected-days mt-6">
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ 'calendar.selected_days' | transloco }}
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <div class="p-4">
-        <p>{{ 'calendar.total_days' | transloco }}: {{ selectedDays.length }}</p>
-        <p>{{ 'calendar.working_days' | transloco }}: {{ workingDaysCount }}</p>
-        <p>{{ 'calendar.period' | transloco }}:
-          {{ formatDate(selectedDays[0]) }} - {{ formatDate(selectedDays[selectedDays.length - 1]) }}
-        </p>
-
-        <div class="flex justify-end mt-4">
-          <mat-button-toggle mat-raised-button color="primary" (click)="saveLeaveRequest()">
-            <mat-icon>save</mat-icon>
-            {{ 'calendar.save_request' | transloco }}
-          </mat-button-toggle>
-        </div>
+  <!-- Sezione "Giorni di ferie ancora da impostare" -->
+  <div class="leave-info-section">
+    <div class="section-header">
+      <h2>Giorni di ferie ancora da impostare</h2>
+    </div>
+    <div class="leave-count-container">
+      <div class="leave-count">
+        <div class="count-number">{{ availableLeaveDays }}</div>
+        <div class="count-label">giorni</div>
+        <div class="hours-detail">({{ availableLeaveHours }} ore)</div>
       </div>
-    </mat-expansion-panel>
+    </div>
+  </div>
+
+  <!-- Sezione "Ferie impostate" -->
+  <div class="leave-info-section">
+    <div class="section-header">
+      <h2>Ferie impostate</h2>
+    </div>
+    <div class="leave-count-container">
+      <div class="leave-count">
+        <div class="count-number">{{ usedLeaveDays }}</div>
+        <div class="count-label">giorni</div>
+        <div class="hours-detail">({{ usedLeaveHours }} ore)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabella con le ferie impostate -->
+  <div class="leave-table-section">
+    <div class="section-header">
+      <h2>Tabella con le ferie impostate</h2>
+    </div>
+
+    <table class="leave-table">
+      <thead>
+        <tr>
+          <th>Data inizio</th>
+          <th>Data fine</th>
+          <th>Giorni totali</th>
+          <th>Giorni lavorativi</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="leaveRequests.length > 0; else noRequests">
+          <tr *ngFor="let request of leaveRequests">
+            <td>{{ formatDate(request.startDate) }}</td>
+            <td>{{ formatDate(request.endDate) }}</td>
+            <td>{{ request.totalDays }}</td>
+            <td>{{ request.workingDays }}</td>
+            <td>
+              <button mat-icon-button (click)="deleteLeaveRequest(request.id!)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-template #noRequests>
+          <tr>
+            <td colspan="5" class="no-data">Nessuna richiesta di ferie impostata</td>
+          </tr>
+        </ng-template>
+      </tbody>
+    </table>
   </div>
 </div>

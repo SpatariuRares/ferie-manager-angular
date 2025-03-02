@@ -7,17 +7,21 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslocoPipe } from '@ngneat/transloco';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 
 import { HolidayService } from '../../services/holiday.service';
 import { CalendarService } from '../../services/calendar.service';
  import { CalendarConfig, COUNTRY_CONFIGS, DEFAULT_CALENDAR_CONFIG } from '../../config/calendar.config';
 import { MonthData, HolidayInfo, DayInfo } from '../../../../core/models/calendar.models';
-import { CalendarCarouselComponent } from '../calendar-carousel/calendar-carousel.component';
 import { LeaveRequestService } from '../../../leave-manager/services/leave-request.service';
 import { LeaveRequest } from '../../../../core/models/leave-request.model';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
+import { CalendarCarouselComponent } from '../calendar-carousel/calendar-carousel.component';
+import { UserConfigService } from '../../../employee-config/services/user-config.service';
+import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
+import { UserProfile } from '../../../../core/models/user-profile.model';
 
 @Component({
   selector: 'app-calendar',
@@ -32,7 +36,9 @@ import { MatIconModule } from '@angular/material/icon';
     MatSelectModule,
     TranslocoPipe,
     MatSnackBarModule,
-    CalendarCarouselComponent
+    CalendarCarouselComponent,
+    MatTableModule,
+    MatCardModule
   ],
   templateUrl: "./calendar.component.html",
   styleUrls: ["./calendar.component.scss"],
@@ -51,9 +57,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
   selectedYear = this.currentYear;
   selectedCountry = DEFAULT_CALENDAR_CONFIG.country;
   availableCountries = Object.keys(COUNTRY_CONFIGS);
+  leaveRequests: LeaveRequest[] = [];
+  displayedColumns: string[] = ['startDate', 'endDate', 'totalDays', 'workingDays', 'actions'];
 
   selectedDays: Date[] = [];
   workingDaysCount = 0;
+
+  availableLeaveDays: number = 0;
+  availableLeaveHours: number = 0;
+  usedLeaveDays: number = 0;
+  usedLeaveHours: number = 0;
+
+  currentUserProfile: UserProfile | null = null;
 
   private selectedStart: Date | null = null;
   private selectedEnd: Date | null = null;
@@ -64,6 +79,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     private holidayService: HolidayService,
     private calendarService: CalendarService,
     private leaveRequestService: LeaveRequestService,
+    private userConfigService: UserConfigService,
     private snackBar: MatSnackBar,
     private cdr: ChangeDetectorRef
   ) {}
@@ -75,11 +91,23 @@ export class CalendarComponent implements OnInit, OnDestroy {
         this.currentConfig = config;
         this.initializeCalendar();
       });
+
     this.leaveRequestService.getLeaveRequests()
       .pipe(takeUntil(this.destroy$))
       .subscribe(requests => {
+        this.leaveRequests = requests;
         this.existingLeaves = this.getAllDatesFromRequests(requests);
         this.updateMonthsData();
+        this.calculateLeaveBalance();
+      });
+
+    this.userConfigService.getUserProfile()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(profile => {
+        this.currentUserProfile = profile;
+        if (profile) {
+          this.calculateLeaveBalance();
+        }
       });
 
     // In ngOnInit or constructor
@@ -377,6 +405,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   formatDate(date: Date): string {
     return this.calendarService.formatDate(date, this.currentConfig);
   }
+
   saveLeaveRequest(): void {
     if (!this.selectedDays.length) {
       this.snackBar.open('Per favore seleziona i giorni per la tua richiesta di ferie', 'Chiudi', { duration: 3000 });
@@ -394,7 +423,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.leaveRequestService.saveLeaveRequest(leaveRequest);
     this.snackBar.open('Richiesta ferie salvata con successo', 'Chiudi', { duration: 3000 });
 
-    this.existingLeaves = [...this.existingLeaves, ...this.selectedDays];
+    // Aggiorna tutti i dati necessari
+    this.leaveRequestService.getLeaveRequests()
+      .pipe(take(1))
+      .subscribe(requests => {
+        this.leaveRequests = requests;
+        this.existingLeaves = this.getAllDatesFromRequests(requests);
+        this.calculateLeaveBalance();
+      });
 
     // Reset della selezione dopo il salvataggio
     this.selectedStart = null;
@@ -402,9 +438,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.selectedDays = [];
     this.workingDaysCount = 0;
     this.updateSelection();
-      this.updateMonthsData(); // Aggiorna la visualizzazione del calendario
-
+    this.updateMonthsData();
   }
+
+
   private getAllDatesFromRequests(requests: LeaveRequest[]): Date[] {
     const allDates: Date[] = [];
 
@@ -415,4 +452,44 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     return allDates;
   }
+
+  calculateLeaveBalance(): void {
+    // Usa il profilo memorizzato invece di accedere direttamente a .value
+    if (!this.currentUserProfile) return;
+
+    // Calcola ore totali disponibili per l'anno
+    const totalAvailableHours = this.userConfigService.calculateTotalAvailableHours(this.currentUserProfile);
+
+    // Calcola ore utilizzate (somma dei giorni lavorativi * 8)
+    const usedHours = this.leaveRequests.reduce((total, req) => total + (req.workingDays * 8), 0);
+
+    // Calcola ore rimanenti
+    const remainingHours = totalAvailableHours - usedHours;
+
+    // Converti in giorni (8 ore = 1 giorno)
+    this.availableLeaveHours = remainingHours;
+    this.availableLeaveDays = Math.floor(remainingHours / 8);
+
+    this.usedLeaveHours = usedHours;
+    this.usedLeaveDays = Math.floor(usedHours / 8);
+  }
+
+
+  deleteLeaveRequest(id: string): void {
+    if (confirm('Sei sicuro di voler eliminare questa richiesta di ferie?')) {
+      this.leaveRequestService.deleteLeaveRequest(id);
+      this.snackBar.open('Richiesta di ferie eliminata con successo', 'Chiudi', { duration: 3000 });
+
+      // Aggiorna la visualizzazione del calendario dopo l'eliminazione
+      this.leaveRequestService.getLeaveRequests()
+        .pipe(take(1))
+        .subscribe(requests => {
+          this.leaveRequests = requests;
+          this.existingLeaves = this.getAllDatesFromRequests(requests);
+          this.updateMonthsData();
+          this.calculateLeaveBalance();
+        });
+    }
+  }
+
 }
