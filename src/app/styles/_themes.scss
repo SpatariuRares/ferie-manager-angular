@@ -7,13 +7,16 @@
 
 // Tema di base: variabili che cambiano a seconda del tema
 $themes: (
-  light: (
+    light: (
     background: $color-background,
     surface: $color-surface,
     border: $color-border,
     text: $color-text,
     text-secondary: lighten($color-text, 20%),
-    shadow: $color-shadow
+    shadow: $color-shadow,
+    primary: $primary,
+    accent: $accent,
+    warn: $warn
   ),
   dark: (
     background: #121212,
@@ -21,9 +24,15 @@ $themes: (
     border: #333333,
     text: #f5f5f5,
     text-secondary: darken(#f5f5f5, 20%),
-    shadow: rgba(0, 0, 0, 0.3)
+    shadow: rgba(0, 0, 0, 0.3),
+    primary: lighten($primary, 10%),
+    accent: lighten($accent, 10%),
+    warn: lighten($warn, 10%)
   )
 );
+
+$theme-map: null !default;
+
 
 // Mixin per applicare stili specifici del tema
 @mixin themed() {

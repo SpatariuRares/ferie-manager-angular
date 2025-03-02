@@ -1,81 +1,109 @@
-<div class="profile-container">
-  <h2 class="mb-4">{{ 'profile.title' | transloco }}</h2>
+<div class="profile__container fade-in">
+  <h2 class="profile__title">{{ 'profile.title' | transloco }}</h2>
 
-  <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
-    <div class="form-grid">
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'profile.name' | transloco }}</mat-label>
-        <input matInput formControlName="name" required>
-        <mat-error *ngIf="profileForm.get('name')?.hasError('required')">
-          {{ 'profile.errors.name_required' | transloco }}
-        </mat-error>
-      </mat-form-field>
+  <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="profile__form">
+    <div class="profile__form-grid">
+      <!-- Nome -->
+      <div class="profile__field">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>{{ 'profile.name' | transloco }}</mat-label>
+          <input matInput formControlName="name" required>
+          <mat-error *ngIf="profileForm.get('name')?.hasError('required')">
+            {{ 'profile.errors.name_required' | transloco }}
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'profile.country' | transloco }}</mat-label>
-        <mat-select formControlName="country" required>
-          <mat-option *ngFor="let country of availableCountries" [value]="country">
-            {{ 'countries.' + country | transloco }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="profileForm.get('country')?.hasError('required')">
-          {{ 'profile.errors.country_required' | transloco }}
-        </mat-error>
-      </mat-form-field>
+      <!-- Paese -->
+      <div class="profile__field">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>{{ 'profile.country' | transloco }}</mat-label>
+          <mat-select formControlName="country" required>
+            <mat-option *ngFor="let country of availableCountries" [value]="country">
+              {{ 'countries.' + country | transloco }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="profileForm.get('country')?.hasError('required')">
+            {{ 'profile.errors.country_required' | transloco }}
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-      <div class="checkbox-container">
+      <!-- Checkbox "Ha iniziato quest'anno" -->
+      <div class="profile__checkbox-container">
         <mat-checkbox formControlName="startedThisYear">
           {{ 'profile.started_this_year' | transloco }}
         </mat-checkbox>
       </div>
 
-      <mat-form-field appearance="outline" *ngIf="profileForm.get('startedThisYear')?.value">
-        <mat-label>{{ 'profile.start_date' | transloco }}</mat-label>
-        <input matInput [matDatepicker]="startDatePicker" formControlName="startDate"
-                (dateChange)="onStartDateChange()">
-        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-        <mat-datepicker #startDatePicker></mat-datepicker>
-        <mat-error *ngIf="profileForm.get('startDate')?.hasError('required')">
-          {{ 'profile.errors.start_date_required' | transloco }}
-        </mat-error>
-      </mat-form-field>
+      <!-- Data inizio (visibile solo se ha iniziato quest'anno) -->
+      <div class="profile__field profile__date-field" *ngIf="profileForm.get('startedThisYear')?.value">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>{{ 'profile.start_date' | transloco }}</mat-label>
+          <input matInput [matDatepicker]="startDatePicker" formControlName="startDate"
+                 (dateChange)="onStartDateChange()">
+          <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #startDatePicker></mat-datepicker>
+          <mat-error *ngIf="profileForm.get('startDate')?.hasError('required')">
+            {{ 'profile.errors.start_date_required' | transloco }}
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'profile.annual_allowance_days' | transloco }}</mat-label>
-        <input matInput type="number" formControlName="annualAllowanceDays" required>
-        <mat-hint>{{ 'profile.equivalent_hours' | transloco }}: {{ convertDaysToHours(getAnnualAllowanceDays()) }}</mat-hint>
-        <mat-error *ngIf="profileForm.get('annualAllowanceDays')?.hasError('required')">
-          {{ 'profile.errors.allowance_required' | transloco }}
-        </mat-error>
-        <mat-error *ngIf="profileForm.get('annualAllowanceDays')?.hasError('min')">
-          {{ 'profile.errors.allowance_min' | transloco }}
-        </mat-error>
-      </mat-form-field>
+      <!-- Ferie annuali (giorni) -->
+      <div class="profile__field">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>{{ 'profile.annual_allowance_days' | transloco }}</mat-label>
+          <input matInput type="number" formControlName="annualAllowanceDays" required>
+          <div class="form-hint">
+            <span class="form-hint__text">
+              {{ 'profile.equivalent_hours' | transloco }}: {{ convertDaysToHours(getAnnualAllowanceDays()) }}
+            </span>
+          </div>
+          <mat-error *ngIf="profileForm.get('annualAllowanceDays')?.hasError('required')">
+            {{ 'profile.errors.allowance_required' | transloco }}
+          </mat-error>
+          <mat-error *ngIf="profileForm.get('annualAllowanceDays')?.hasError('min')">
+            {{ 'profile.errors.allowance_min' | transloco }}
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'profile.unused_previous_year_hours' | transloco }}</mat-label>
-        <input matInput type="number" formControlName="unusedPreviousYearHours" required>
-        <mat-hint>{{ 'profile.equivalent_days' | transloco }}: {{ convertHoursToDays(getUnusedPreviousDays()) }}</mat-hint>
-        <mat-error *ngIf="profileForm.get('unusedPreviousYearDays')?.hasError('min')">
-          {{ 'profile.errors.unused_days_min' | transloco }}
-        </mat-error>
-      </mat-form-field>
+      <!-- Ore non utilizzate dall'anno precedente -->
+      <div class="profile__field">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>{{ 'profile.unused_previous_year_hours' | transloco }}</mat-label>
+          <input matInput type="number" formControlName="unusedPreviousYearHours" required>
+          <div class="form-hint">
+            <span class="form-hint__text">
+              {{ 'profile.equivalent_days' | transloco }}: {{ convertHoursToDays(getUnusedPreviousDays()) }}
+            </span>
+          </div>
+          <mat-error *ngIf="profileForm.get('unusedPreviousYearDays')?.hasError('min')">
+            {{ 'profile.errors.unused_days_min' | transloco }}
+          </mat-error>
+        </mat-form-field>
+      </div>
     </div>
 
-    <div class="leave-metrics">
-      <mat-card class="metric-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'profile.total_available_days' | transloco }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="metric-value">{{ totalAvailableDays | number:'1.1-1' }}</div>
-          <div class="metric-subtitle">{{ 'profile.equivalent_hours' | transloco }}: {{ totalAvailableHours | number:'1.0-0' }}</div>
-        </mat-card-content>
-      </mat-card>
+    <!-- Metriche Leave -->
+    <div class="profile__metrics slide-in-up">
+      <div class="metric-card">
+        <div class="metric-card__header">
+          <h3>{{ 'profile.total_available_days' | transloco }}</h3>
+        </div>
+        <div class="metric-card__content">
+          <div class="metric-card__value">{{ totalAvailableDays | number:'1.1-1' }}</div>
+          <div class="metric-card__subtitle">
+            {{ 'profile.equivalent_hours' | transloco }}: {{ totalAvailableHours | number:'1.0-0' }}
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="form-actions">
-      <button mat-raised-button color="primary" type="submit" [disabled]="!profileForm.valid">
+    <!-- Azioni form -->
+    <div class="profile__actions">
+      <button type="submit" class="btn--primary" [disabled]="!profileForm.valid">
         {{ 'profile.save' | transloco }}
       </button>
     </div>
