@@ -57,7 +57,6 @@
 .justify-around { justify-content: space-around; }
 .justify-evenly { justify-content: space-evenly; }
 
-.gap-4 { gap: 1rem; }
 // Gap utilities
 @each $name, $value in $spacing {
   .gap-#{$name} { gap: $value; }

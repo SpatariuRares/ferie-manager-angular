@@ -2,7 +2,7 @@
 
 
   <!-- Calendar carousel -->
-  <mat-card class="calendar-card  mb-4">
+  <mat-card class="calendar-card  mb-md">
     <mat-card-content>
       <div class="flex justify-between items-center flex-wrap gap-md">
         <!-- Year selector -->
@@ -38,7 +38,7 @@
   </mat-card>
 
   <!-- Save button (shown when days are selected) -->
-  <div *ngIf="selectedDays.length > 0" class="save-action-row mt-4 mb-4 flex justify-end">
+  <div *ngIf="selectedDays.length > 0" class="save-action-row mb-md flex justify-end">
     <button mat-raised-button color="accent" (click)="saveLeaveRequest()">
       <mat-icon>save</mat-icon>
       {{ 'calendar.save_request' | transloco }}
@@ -46,14 +46,14 @@
   </div>
 
   <!-- Available and Used Leave Cards in flex layout -->
-  <div class="flex flex-row md:flex-row gap-md mb-4">
+  <div class="flex flex-row md:flex-row gap-md mb-md">
     <!-- Available leave card -->
     <mat-card class="flex-1 leave-info-card available-leave">
-      <mat-card-header class="bg-primary text-white py-3 px-4">
+      <mat-card-header class="bg-primary text-white py-sm px-md">
         <mat-card-title>{{ 'calendar.available_leave' | transloco }}</mat-card-title>
       </mat-card-header>
       <mat-card-content class="text-center py-6">
-        <div class="text-4xl font-bold mb-2">{{ availableLeaveDays }}</div>
+        <div class="text-mdxl font-bold mb-2">{{ availableLeaveDays }}</div>
         <div class="text-gray-600">{{ 'calendar.days' | transloco }}</div>
         <div class="text-sm text-gray-500 mt-2">({{ availableLeaveHours }} {{ 'calendar.hours' | transloco }})</div>
       </mat-card-content>
@@ -61,11 +61,11 @@
 
     <!-- Used leave card -->
     <mat-card class="flex-1 leave-info-card used-leave">
-      <mat-card-header class="bg-primary text-white py-3 px-4">
+      <mat-card-header class="bg-primary text-white py-sm px-md">
         <mat-card-title>{{ 'calendar.used_leave' | transloco }}</mat-card-title>
       </mat-card-header>
       <mat-card-content class="text-center py-6">
-        <div class="text-4xl font-bold mb-2">{{ usedLeaveDays }}</div>
+        <div class="text-mdxl font-bold mb-2">{{ usedLeaveDays }}</div>
         <div class="text-gray-600">{{ 'calendar.days' | transloco }}</div>
         <div class="text-sm text-gray-500 mt-2">({{ usedLeaveHours }} {{ 'calendar.hours' | transloco }})</div>
       </mat-card-content>
@@ -74,7 +74,7 @@
 
   <!-- Table of leave requests -->
   <mat-card class="leave-table-card">
-    <mat-card-header class="bg-primary text-white py-3 px-4">
+    <mat-card-header class="bg-primary text-white py-sm px-md">
       <mat-card-title>{{ 'calendar.leave_table' | transloco }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
