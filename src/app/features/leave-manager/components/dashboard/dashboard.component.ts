@@ -62,6 +62,7 @@ export class DashboardComponent implements OnInit {
     this.translationService.getAvailableLanguages().subscribe(
       languages => this.availableLanguages = languages
     );
+    console.log(this.availableLanguages);
   }
 
   onTabChange(index: number) {
