@@ -21,7 +21,15 @@
     "selected_days": "Giorni Selezionati",
     "total_days": "Giorni Totali",
     "period": "Periodo",
-    "save_request": "Salva Richiesta"
+    "save_request": "Salva Richiesta",
+    "available_leave": "Giorni di ferie ancora da impostare",
+    "used_leave": "Ferie impostate",
+    "leave_table": "Tabella con le ferie impostate",
+    "start_date": "Data inizio",
+    "end_date": "Data fine",
+    "no_leave_requests": "Nessuna richiesta di ferie impostata",
+    "days": "giorni",
+    "hours": "ore"
   },
   "countries": {
     "IT": "Italia",

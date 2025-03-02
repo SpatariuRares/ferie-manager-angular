@@ -1,100 +1,134 @@
 <div class="calendar-container">
-  <!-- Contenitore principale del calendario con controlli -->
-  <div class="calendar-top-section mb-4">
-    <div class="year-toggle-container">
-      <button mat-button [class.selected]="selectedYear === currentYear" (click)="selectedYear = currentYear; onYearChange()">
-        {{ currentYear }}
-      </button>
-      <button mat-button [class.selected]="selectedYear === currentYear + 1" (click)="selectedYear = currentYear + 1; onYearChange()">
-        {{ currentYear + 1 }}
-      </button>
-    </div>
+  <!-- Top controls section -->
+  <mat-card class="top-controls-card mb-4">
+    <mat-card-content>
+      <div class="flex justify-between items-center flex-wrap gap-4">
+        <!-- Year selector -->
+        <div class="year-selector">
+          <mat-button-toggle-group [value]="selectedYear">
+            <mat-button-toggle [value]="currentYear" (click)="selectedYear = currentYear; onYearChange()">
+              {{ currentYear }}
+            </mat-button-toggle>
+            <mat-button-toggle [value]="currentYear + 1" (click)="selectedYear = currentYear + 1; onYearChange()">
+              {{ currentYear + 1 }}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
 
-    <div class="country-selector">
-      <mat-form-field appearance="outline">
-        <mat-label>Seleziona Paese</mat-label>
-        <mat-select [(ngModel)]="selectedCountry" (selectionChange)="onCountryChange()">
-          <mat-option *ngFor="let country of availableCountries" [value]="country">
-            {{ 'countries.' + country | transloco }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-  </div>
-
-  <!-- Carousel dei mesi -->
-  <div class="calendar-carousel-section">
-    <app-calendar-carousel
-      [months]="months"
-      [weekDays]="weekDays"
-      (daySelected)="onDaySelected($event)">
-    </app-calendar-carousel>
-  </div>
-
-  <!-- Sezione "Giorni di ferie ancora da impostare" -->
-  <div class="leave-info-section">
-    <div class="section-header">
-      <h2>Giorni di ferie ancora da impostare</h2>
-    </div>
-    <div class="leave-count-container">
-      <div class="leave-count">
-        <div class="count-number">{{ availableLeaveDays }}</div>
-        <div class="count-label">giorni</div>
-        <div class="hours-detail">({{ availableLeaveHours }} ore)</div>
+        <!-- Country selector -->
+        <div class="country-selector">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'calendar.select_country' | transloco }}</mat-label>
+            <mat-select [(ngModel)]="selectedCountry" (selectionChange)="onCountryChange()">
+              <mat-option *ngFor="let country of availableCountries" [value]="country">
+                {{ 'countries.' + country | transloco }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
-    </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Calendar carousel -->
+  <mat-card class="calendar-card mb-4">
+    <mat-card-content>
+      <app-calendar-carousel
+        [months]="months"
+        [weekDays]="weekDays"
+        (daySelected)="onDaySelected($event)">
+      </app-calendar-carousel>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Save button (shown when days are selected) -->
+  <div *ngIf="selectedDays.length > 0" class="save-action-row mt-4 mb-4 flex justify-end">
+    <button mat-raised-button color="accent" (click)="saveLeaveRequest()">
+      <mat-icon>save</mat-icon>
+      {{ 'calendar.save_request' | transloco }}
+    </button>
   </div>
 
-  <!-- Sezione "Ferie impostate" -->
-  <div class="leave-info-section">
-    <div class="section-header">
-      <h2>Ferie impostate</h2>
-    </div>
-    <div class="leave-count-container">
-      <div class="leave-count">
-        <div class="count-number">{{ usedLeaveDays }}</div>
-        <div class="count-label">giorni</div>
-        <div class="hours-detail">({{ usedLeaveHours }} ore)</div>
-      </div>
-    </div>
+  <!-- Available and Used Leave Cards in flex layout -->
+  <div class="flex flex-col md:flex-row gap-4 mb-4">
+    <!-- Available leave card -->
+    <mat-card class="flex-1 leave-info-card available-leave">
+      <mat-card-header class="bg-primary text-white py-3 px-4">
+        <mat-card-title>{{ 'calendar.available_leave' | transloco }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="text-center py-6">
+        <div class="text-4xl font-bold mb-2">{{ availableLeaveDays }}</div>
+        <div class="text-gray-600">{{ 'calendar.days' | transloco }}</div>
+        <div class="text-sm text-gray-500 mt-2">({{ availableLeaveHours }} {{ 'calendar.hours' | transloco }})</div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Used leave card -->
+    <mat-card class="flex-1 leave-info-card used-leave">
+      <mat-card-header class="bg-primary text-white py-3 px-4">
+        <mat-card-title>{{ 'calendar.used_leave' | transloco }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="text-center py-6">
+        <div class="text-4xl font-bold mb-2">{{ usedLeaveDays }}</div>
+        <div class="text-gray-600">{{ 'calendar.days' | transloco }}</div>
+        <div class="text-sm text-gray-500 mt-2">({{ usedLeaveHours }} {{ 'calendar.hours' | transloco }})</div>
+      </mat-card-content>
+    </mat-card>
   </div>
 
-  <!-- Tabella con le ferie impostate -->
-  <div class="leave-table-section">
-    <div class="section-header">
-      <h2>Tabella con le ferie impostate</h2>
-    </div>
-
-    <table class="leave-table">
-      <thead>
-        <tr>
-          <th>Data inizio</th>
-          <th>Data fine</th>
-          <th>Giorni totali</th>
-          <th>Giorni lavorativi</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngIf="leaveRequests.length > 0; else noRequests">
-          <tr *ngFor="let request of leaveRequests">
-            <td>{{ formatDate(request.startDate) }}</td>
-            <td>{{ formatDate(request.endDate) }}</td>
-            <td>{{ request.totalDays }}</td>
-            <td>{{ request.workingDays }}</td>
-            <td>
-              <button mat-icon-button (click)="deleteLeaveRequest(request.id!)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </td>
-          </tr>
+  <!-- Table of leave requests -->
+  <mat-card class="leave-table-card">
+    <mat-card-header class="bg-primary text-white py-3 px-4">
+      <mat-card-title>{{ 'calendar.leave_table' | transloco }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="leaveRequests" class="w-full">
+        <!-- Start Date Column -->
+        <ng-container matColumnDef="startDate">
+          <th mat-header-cell *matHeaderCellDef>{{ 'calendar.start_date' | transloco }}</th>
+          <td mat-cell *matCellDef="let request">{{ formatDate(request.startDate) }}</td>
         </ng-container>
-        <ng-template #noRequests>
-          <tr>
-            <td colspan="5" class="no-data">Nessuna richiesta di ferie impostata</td>
-          </tr>
-        </ng-template>
-      </tbody>
-    </table>
-  </div>
+
+        <!-- End Date Column -->
+        <ng-container matColumnDef="endDate">
+          <th mat-header-cell *matHeaderCellDef>{{ 'calendar.end_date' | transloco }}</th>
+          <td mat-cell *matCellDef="let request">{{ formatDate(request.endDate) }}</td>
+        </ng-container>
+
+        <!-- Total Days Column -->
+        <ng-container matColumnDef="totalDays">
+          <th mat-header-cell *matHeaderCellDef>{{ 'calendar.total_days' | transloco }}</th>
+          <td mat-cell *matCellDef="let request">{{ request.totalDays }}</td>
+        </ng-container>
+
+        <!-- Working Days Column -->
+        <ng-container matColumnDef="workingDays">
+          <th mat-header-cell *matHeaderCellDef>{{ 'calendar.working_days' | transloco }}</th>
+          <td mat-cell *matCellDef="let request">{{ request.workingDays }}</td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let request">
+            <button mat-icon-button color="warn" (click)="deleteLeaveRequest(request.id!)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['startDate', 'endDate', 'totalDays', 'workingDays', 'actions']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['startDate', 'endDate', 'totalDays', 'workingDays', 'actions']"></tr>
+
+        <!-- No data row -->
+        <tr *matNoDataRow>
+          <td colspan="5" class="py-6 text-center text-gray-500">
+            {{ 'calendar.no_leave_requests' | transloco }}
+          </td>
+        </tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+
 </div>

@@ -22,6 +22,7 @@ import { UserConfigService } from '../../../employee-config/services/user-config
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { UserProfile } from '../../../../core/models/user-profile.model';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-calendar',
@@ -34,11 +35,12 @@ import { UserProfile } from '../../../../core/models/user-profile.model';
     MatListModule,
     MatIconModule,
     MatSelectModule,
-    TranslocoPipe,
-    MatSnackBarModule,
-    CalendarCarouselComponent,
+    MatCardModule,
+    MatButtonModule,
     MatTableModule,
-    MatCardModule
+    MatSnackBarModule,
+    TranslocoPipe,
+    CalendarCarouselComponent,
   ],
   templateUrl: "./calendar.component.html",
   styleUrls: ["./calendar.component.scss"],
