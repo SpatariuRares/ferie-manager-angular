@@ -1,0 +1,139 @@
+// --------------------------------------------------
+// KEYFRAMES
+// --------------------------------------------------
+
+// Fade In
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Fade Out
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+// Slide In From Right
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+// Slide Out To Right
+@keyframes slideOutRight {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+// Slide In From Bottom
+@keyframes slideInBottom {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+// Pulse
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+// Rotate
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// --------------------------------------------------
+// ANIMATION MIXINS
+// --------------------------------------------------
+
+// Mixin per applicare facilmente le animazioni
+@mixin animate($animation, $duration: 0.3s, $timing-function: ease, $delay: 0s, $iteration-count: 1, $direction: normal, $fill-mode: forwards) {
+  animation-name: $animation;
+  animation-duration: $duration;
+  animation-timing-function: $timing-function;
+  animation-delay: $delay;
+  animation-iteration-count: $iteration-count;
+  animation-direction: $direction;
+  animation-fill-mode: $fill-mode;
+}
+
+// Transizioni specifiche
+@mixin transition-all($duration: 0.2s, $timing-function: ease) {
+  transition: all $duration $timing-function;
+}
+
+@mixin transition-transform($duration: 0.2s, $timing-function: ease) {
+  transition: transform $duration $timing-function;
+}
+
+@mixin transition-opacity($duration: 0.2s, $timing-function: ease) {
+  transition: opacity $duration $timing-function;
+}
+
+// --------------------------------------------------
+// CLASSI DI UTILITÀ PER ANIMAZIONI
+// --------------------------------------------------
+
+// Fade In
+.fade-in {
+  @include animate(fadeIn);
+}
+
+// Fade Out
+.fade-out {
+  @include animate(fadeOut);
+}
+
+// Slide In From Right
+.slide-in-right {
+  @include animate(slideInRight);
+}
+
+// Slide Out To Right
+.slide-out-right {
+  @include animate(slideOutRight);
+}
+
+// Slide In From Bottom
+.slide-in-bottom {
+  @include animate(slideInBottom);
+}
+
+// Pulse Animation
+.pulse {
+  @include animate(pulse, 1s, ease-in-out, 0s, infinite);
+}
+
+// Rotate Animation
+.rotate {
+  @include animate(rotate, 1s, linear, 0s, infinite);
+}
+
+// Hover Effects
+.hover-grow {
+  @include transition-transform();
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.hover-brighten {
+  @include transition-all();
+
+  &:hover {
+    filter: brightness(1.1);
+  }
+}
+
+.hover-fade {
+  opacity: 0.8;
+  @include transition-opacity();
+
+  &:hover {
+    opacity: 1;
+  }
+}

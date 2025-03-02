@@ -1,32 +1,167 @@
+@import 'variables';
+
+// --------------------------------------------------
+// RESPONSIVE MIXINS
+// --------------------------------------------------
 @mixin media-breakpoint-up($breakpoint) {
   @if map-has-key($breakpoints, $breakpoint) {
     @media (min-width: map-get($breakpoints, $breakpoint)) {
       @content;
     }
+  } @else {
+    @error "Breakpoint '#{$breakpoint}' not found in $breakpoints map.";
   }
 }
 
+@mixin media-breakpoint-down($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint) - 0.02) {
+      @content;
+    }
+  } @else {
+    @error "Breakpoint '#{$breakpoint}' not found in $breakpoints map.";
+  }
+}
+
+// --------------------------------------------------
+// LAYOUT MIXINS
+// --------------------------------------------------
 @mixin flex-center {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin grid-columns($cols) {
+  display: grid;
+  grid-template-columns: repeat($cols, 1fr);
+}
+
+// --------------------------------------------------
+// COMPONENT MIXINS
+// --------------------------------------------------
 @mixin calendar-day-base {
   width: $calendar-day-size;
   height: $calendar-day-size;
-  border-radius: 50%;
+  border-radius: 4px;
   @include flex-center;
-  font-size: 0.875rem;
+  font-size: $font-size-sm;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: $transition-base;
+  border: 1px solid transparent;
+  font-weight: $font-weight-medium;
+  position: relative;
 
   &:hover:not(:disabled) {
-    filter: brightness(0.95);
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px $color-shadow;
+    z-index: 1;
   }
 
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+}
+
+@mixin calendar-day-variant($type) {
+  @if map-has-key($calendar-colors, $type) {
+    $color: map-get($calendar-colors, $type);
+    background-color: $color;
+    border-color: darken($color, 10%);
+
+    @if $type == 'selected' or $type == 'today' {
+      color: white;
+    } @else {
+      color: darken($color, 40%);
+    }
+
+    &:hover:not(:disabled) {
+      background-color: darken($color, 5%);
+    }
+  } @else {
+    @error "Calendar day type '#{$type}' not found in $calendar-colors map.";
+  }
+}
+
+@mixin card-base {
+  background-color: $color-surface;
+  border-radius: $card-border-radius;
+  box-shadow: $card-shadow;
+  overflow: hidden;
+}
+
+@mixin card-header {
+  background-color: $primary;
+  color: $color-surface;
+  padding: map-get($spacing, 'sm') map-get($spacing, 'md');
+
+  .mat-card-title {
+    margin: 0;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-medium;
+  }
+}
+
+// --------------------------------------------------
+// TYPOGRAPHY MIXINS
+// --------------------------------------------------
+@mixin heading-1 {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  margin-bottom: map-get($spacing, 'md');
+}
+
+@mixin heading-2 {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  margin-bottom: map-get($spacing, 'sm');
+}
+
+@mixin body-text {
+  font-size: $font-size-base;
+  font-weight: $font-weight-regular;
+  line-height: 1.5;
+}
+
+// --------------------------------------------------
+// UTILITY MIXINS
+// --------------------------------------------------
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Versione corretta del mixin custom-scrollbar
+// Non usa il selettore parent "&" al livello principale
+@mixin custom-scrollbar($selector) {
+  #{$selector}::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  #{$selector}::-webkit-scrollbar-track {
+    background: $color-background;
+  }
+
+  #{$selector}::-webkit-scrollbar-thumb {
+    background: darken($color-border, 10%);
+    border-radius: 4px;
+  }
+
+  #{$selector}::-webkit-scrollbar-thumb:hover {
+    background: darken($color-border, 20%);
   }
 }

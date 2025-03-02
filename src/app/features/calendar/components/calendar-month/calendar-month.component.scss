@@ -6,21 +6,10 @@
 }
 
 .month-card {
-  background-color: $color-surface;
-  border-radius: map-get($spacing, 'sm');
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  @include card-base;
 
   &-header {
-    padding: map-get($spacing, 'md');
-    background-color: $primary;
-
-    .mat-card-title {
-      color: white;
-      margin: 0;
-      font-size: 1.25rem;
-      font-weight: 500;
-    }
+    @include card-header;
   }
 
   &-content {
@@ -29,14 +18,13 @@
 }
 
 .week-days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  @include grid-columns(7);
   margin-bottom: map-get($spacing, 'sm');
 
   .day-name {
     text-align: center;
-    font-weight: 500;
-    font-size: 0.875rem;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-sm;
     padding: map-get($spacing, 'xs');
 
     &.weekend {
@@ -46,8 +34,7 @@
 }
 
 .days-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  @include grid-columns(7);
   gap: map-get($spacing, 'xs');
   justify-items: center;
   padding: map-get($spacing, 'xs');

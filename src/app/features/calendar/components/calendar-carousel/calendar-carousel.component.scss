@@ -17,7 +17,7 @@
 
 .months-wrapper {
   display: flex;
-  transition: transform 0.3s ease-in-out;
+  transition: $transition-slow;
 }
 
 .month-pair {
@@ -32,9 +32,7 @@
 }
 
 .nav-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -42,7 +40,7 @@
   background-color: $primary;
   color: white;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: $transition-base;
 
   &:hover:not(:disabled) {
     background-color: darken($primary, 10%);
@@ -50,8 +48,8 @@
 
   &:disabled {
     background-color: $color-border;
-    cursor: not-allowed;
     opacity: 0.5;
+    cursor: not-allowed;
   }
 
   mat-icon {

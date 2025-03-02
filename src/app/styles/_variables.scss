@@ -1,29 +1,46 @@
+// --------------------------------------------------
+// COLORS
+// --------------------------------------------------
+// Brand colors
 $primary: #FF1493; // Deep Pink
-$accent: #9370DB; // Medium Purple
-$warn: #FF4500; // Orange Red
+$accent: #9370DB;  // Medium Purple
+$warn: #FF4500;    // Orange Red
 
-// Colors
+// Neutral colors
 $color-background: #fafafa;
 $color-surface: #ffffff;
 $color-border: #e0e0e0;
 $color-text: #333333;
-
-// _variables.scss
-$calendar-day-size: 2.5rem;
-
-$calendar-day-normal: #E0F7FA; // Light Cyan
-$calendar-day-weekend: #FFF3E0; // Light Orange
-$calendar-day-holiday: #F8BBD0; // Light Pink
-$calendar-day-selected: #B39DDB; // Light Purple
-$calendar-day-bridge: #80DEEA; // Cyan
-$calendar-day-today: #FF1493; // Deep Pink
-$calendar-day-leave: #FFB74D; // Orange
-
-$warn: #f44336;
-$color-border: #B0BEC5; // Blue Grey
 $color-shadow: rgba(0, 0, 0, 0.2);
 
-// Spacing
+// Calendar colors
+$calendar-colors: (
+  'normal': #E0F7FA,  // Light Cyan
+  'weekend': #FFF3E0,  // Light Orange
+  'holiday': #F8BBD0,  // Light Pink
+  'selected': #B39DDB,  // Light Purple
+  'bridge': #80DEEA,  // Cyan
+  'today': #FF1493,  // Deep Pink (primary)
+  'leave': #FFB74D   // Orange
+);
+
+// --------------------------------------------------
+// TYPOGRAPHY
+// --------------------------------------------------
+$font-family-base: Roboto, "Helvetica Neue", sans-serif;
+$font-size-base: 1rem;
+$font-size-sm: 0.875rem;
+$font-size-lg: 1.25rem;
+$font-size-xl: 1.5rem;
+$font-size-xxl: 2rem;
+
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+// --------------------------------------------------
+// SPACING
+// --------------------------------------------------
 $spacing-unit: 0.25rem;
 $spacing: (
   'xs': $spacing-unit,
@@ -33,7 +50,9 @@ $spacing: (
   'xl': $spacing-unit * 8
 );
 
-// Breakpoints
+// --------------------------------------------------
+// BREAKPOINTS
+// --------------------------------------------------
 $breakpoints: (
   'sm': 576px,
   'md': 768px,
@@ -41,7 +60,32 @@ $breakpoints: (
   'xl': 1200px
 );
 
-// Component specific
+// --------------------------------------------------
+// COMPONENT SPECIFIC
+// --------------------------------------------------
+// Calendar
 $calendar-header-height: 3rem;
-$calendar-day-size: 2rem;
+$calendar-day-size: 2.5rem;
 $calendar-month-gap: 1rem;
+
+// Cards
+$card-border-radius: map-get($spacing, 'sm');
+$card-padding: map-get($spacing, 'md');
+$card-shadow: 0 2px 4px $color-shadow;
+
+// --------------------------------------------------
+// Z-INDEX
+// --------------------------------------------------
+$z-index: (
+  'modal': 1000,
+  'dropdown': 900,
+  'header': 800,
+  'footer': 700,
+  'base': 1
+);
+
+// --------------------------------------------------
+// TRANSITIONS
+// --------------------------------------------------
+$transition-base: all 0.2s ease;
+$transition-slow: all 0.3s ease-in-out;

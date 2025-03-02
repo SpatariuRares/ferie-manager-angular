@@ -1,0 +1,163 @@
+@import 'variables';
+@import 'mixins';
+
+// --------------------------------------------------
+// CONTAINER
+// --------------------------------------------------
+.container {
+  width: 100%;
+  padding-right: map-get($spacing, 'md');
+  padding-left: map-get($spacing, 'md');
+  margin-right: auto;
+  margin-left: auto;
+
+  @include media-breakpoint-up('sm') {
+    max-width: 540px;
+  }
+
+  @include media-breakpoint-up('md') {
+    max-width: 720px;
+  }
+
+  @include media-breakpoint-up('lg') {
+    max-width: 960px;
+  }
+
+  @include media-breakpoint-up('xl') {
+    max-width: 1140px;
+  }
+}
+
+.container-fluid {
+  width: 100%;
+  padding-right: map-get($spacing, 'md');
+  padding-left: map-get($spacing, 'md');
+  margin-right: auto;
+  margin-left: auto;
+}
+
+// --------------------------------------------------
+// GRID LAYOUT
+// --------------------------------------------------
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -#{map-get($spacing, 'sm')};
+  margin-left: -#{map-get($spacing, 'sm')};
+}
+
+@mixin make-col($size, $columns: 12) {
+  flex: 0 0 percentage($size / $columns);
+  max-width: percentage($size / $columns);
+}
+
+.col {
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+  padding-right: map-get($spacing, 'sm');
+  padding-left: map-get($spacing, 'sm');
+}
+
+@for $i from 1 through 12 {
+  .col-#{$i} {
+    @include make-col($i);
+    padding-right: map-get($spacing, 'sm');
+    padding-left: map-get($spacing, 'sm');
+  }
+}
+
+@each $breakpoint, $width in $breakpoints {
+  @include media-breakpoint-up($breakpoint) {
+    @for $i from 1 through 12 {
+      .col-#{$breakpoint}-#{$i} {
+        @include make-col($i);
+        padding-right: map-get($spacing, 'sm');
+        padding-left: map-get($spacing, 'sm');
+      }
+    }
+  }
+}
+
+// --------------------------------------------------
+// COMMON LAYOUTS
+// --------------------------------------------------
+.page-container {
+  @include flex-column;
+  min-height: 100vh;
+}
+
+.content-container {
+  flex: 1;
+  padding: map-get($spacing, 'md');
+  overflow-y: auto;
+}
+
+.sidebar-layout {
+  display: flex;
+  height: 100%;
+
+  .sidebar {
+    width: 250px;
+    background-color: $color-surface;
+    border-right: 1px solid $color-border;
+    padding: map-get($spacing, 'md');
+
+    @include media-breakpoint-down('md') {
+      width: 80px;
+
+      .sidebar-text {
+        display: none;
+      }
+    }
+  }
+
+  .content {
+    flex: 1;
+    padding: map-get($spacing, 'md');
+    overflow-y: auto;
+  }
+}
+
+// --------------------------------------------------
+// DASHBOARD LAYOUT
+// --------------------------------------------------
+.dashboard-layout {
+  display: grid;
+  gap: map-get($spacing, 'md');
+
+  @include media-breakpoint-up('lg') {
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .dashboard-main {
+    @include card-base;
+    padding: map-get($spacing, 'md');
+  }
+
+  .dashboard-sidebar {
+    @include flex-column;
+    gap: map-get($spacing, 'md');
+  }
+}
+
+// --------------------------------------------------
+// CALENDAR LAYOUT
+// --------------------------------------------------
+.calendar-layout {
+  @include flex-column;
+  gap: map-get($spacing, 'md');
+
+  .calendar-controls {
+    @include flex-between;
+    flex-wrap: wrap;
+    gap: map-get($spacing, 'sm');
+    margin-bottom: map-get($spacing, 'md');
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: map-get($spacing, 'md');
+  }
+}

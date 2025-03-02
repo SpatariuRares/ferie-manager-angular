@@ -1,12 +1,14 @@
-// src/app/features/leave-manager/components/dashboard/dashboard.component.scss
+@import '../../../../styles/variables';
+@import '../../../../styles/mixins';
+
 .dashboard-container {
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   height: 100vh;
 }
 
 mat-toolbar {
-  z-index: 2;
+  z-index: map-get($z-index, 'header');
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 mat-sidenav-container {
@@ -14,9 +16,27 @@ mat-sidenav-container {
 }
 
 .active {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: rgba($primary, 0.1);
+  border-left: 3px solid $primary;
 }
 
 mat-sidenav {
-  border-right: 1px solid rgba(0, 0, 0, 0.12);
+  border-right: 1px solid $color-border;
+  width: 260px;
+
+  @include media-breakpoint-down('md') {
+    width: 200px;
+  }
+}
+
+.mat-list-item {
+  &.active {
+    .mat-icon {
+      color: $primary;
+    }
+  }
+
+  &:hover:not(.active) {
+    background-color: rgba($color-border, 0.2);
+  }
 }

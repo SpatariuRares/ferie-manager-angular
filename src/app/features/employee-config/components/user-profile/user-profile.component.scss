@@ -18,8 +18,7 @@
 }
 
 .checkbox-container {
-  display: flex;
-  align-items: center;
+  @include flex-center;
   min-height: 56px; // Match height of form fields
   padding: 0 16px;
 }
@@ -29,7 +28,7 @@
 }
 
 .metric-card {
-  background-color: $color-surface;
+  @include card-base;
   text-align: center;
 
   mat-card-header {
@@ -38,13 +37,13 @@
   }
 
   .metric-value {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: $font-size-xxl;
+    font-weight: $font-weight-bold;
     padding: map-get($spacing, 'md') map-get($spacing, 'md') 0;
   }
 
   .metric-subtitle {
-    font-size: 1rem;
+    font-size: $font-size-base;
     color: rgba(0, 0, 0, 0.6);
     padding-bottom: map-get($spacing, 'md');
   }
@@ -52,8 +51,7 @@
 
 .form-actions {
   margin-top: map-get($spacing, 'lg');
-  display: flex;
-  justify-content: flex-end;
+  @include flex-end;
 }
 
 .full-width {

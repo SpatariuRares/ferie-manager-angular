@@ -1,0 +1,161 @@
+@import 'variables';
+@import 'mixins';
+
+// --------------------------------------------------
+// CARD STYLES
+// --------------------------------------------------
+.mat-card {
+  @include card-base;
+
+  .mat-card-header {
+    @include card-header;
+  }
+
+  .mat-card-content {
+    padding: map-get($spacing, 'md');
+  }
+
+  .mat-card-actions {
+    padding: map-get($spacing, 'sm') map-get($spacing, 'md');
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+// --------------------------------------------------
+// BUTTON STYLES
+// --------------------------------------------------
+.mat-button,
+.mat-raised-button,
+.mat-stroked-button,
+.mat-flat-button {
+  font-weight: $font-weight-medium;
+
+  &.mat-primary {
+    background-color: $primary;
+  }
+
+  &.mat-accent {
+    background-color: $accent;
+  }
+
+  &.mat-warn {
+    background-color: $warn;
+  }
+}
+
+.mat-icon-button {
+  @include flex-center;
+
+  .mat-icon {
+    font-size: 20px;
+  }
+}
+
+// --------------------------------------------------
+// FORM FIELD STYLES
+// --------------------------------------------------
+.mat-form-field {
+  width: 100%;
+
+  &.mat-form-field-appearance-outline {
+    .mat-form-field-outline {
+      color: $color-border;
+    }
+
+    &.mat-focused {
+      .mat-form-field-outline {
+        color: $primary;
+      }
+    }
+  }
+}
+
+// --------------------------------------------------
+// TABLE STYLES
+// --------------------------------------------------
+.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  .mat-header-cell {
+    font-weight: $font-weight-medium;
+    color: $color-text;
+    background-color: lighten($color-border, 10%);
+  }
+
+  .mat-cell,
+  .mat-header-cell {
+    padding: map-get($spacing, 'sm') map-get($spacing, 'md');
+    border-bottom: 1px solid $color-border;
+  }
+
+  .mat-row {
+    transition: $transition-base;
+
+    &:hover {
+      background-color: rgba($color-border, 0.2);
+    }
+  }
+}
+
+// --------------------------------------------------
+// SIDENAV STYLES
+// --------------------------------------------------
+.mat-sidenav-container {
+  height: 100%;
+
+  .mat-sidenav {
+    width: 250px;
+    border-right: 1px solid $color-border;
+  }
+
+  .mat-sidenav-content {
+    padding: map-get($spacing, 'md');
+  }
+}
+
+.mat-nav-list {
+  .mat-list-item {
+    &.active {
+      background-color: rgba($primary, 0.1);
+      color: $primary;
+
+      .mat-icon {
+        color: $primary;
+      }
+    }
+
+    &:hover:not(.active) {
+      background-color: rgba($color-border, 0.2);
+    }
+  }
+}
+
+// --------------------------------------------------
+// TOOLBAR STYLES
+// --------------------------------------------------
+.mat-toolbar {
+  &.mat-primary {
+    background-color: $primary;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: map-get($z-index, 'header');
+  }
+}
+
+// --------------------------------------------------
+// CALENDAR SPECIFIC COMPONENTS
+// --------------------------------------------------
+.calendar-container {
+  .month-selector,
+  .year-selector {
+    margin-bottom: map-get($spacing, 'md');
+  }
+
+  .day-selector {
+    @include grid-columns(7);
+    gap: map-get($spacing, 'xs');
+    margin-bottom: map-get($spacing, 'md');
+  }
+}

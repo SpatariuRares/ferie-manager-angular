@@ -1,14 +1,13 @@
-<!-- src/app/features/leave-manager/components/dashboard/dashboard.component.html -->
-<div class="dashboard-container">
-  <mat-toolbar color="primary" class="flex justify-between">
+<div class="page-container">
+  <mat-toolbar color="primary" class="flex justify-between items-center">
     <div class="flex items-center">
       <button mat-icon-button (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-      <span class="ml-2">{{ 'dashboard.title' | transloco }}</span>
+      <span class="ml-sm">{{ 'dashboard.title' | transloco }}</span>
     </div>
 
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-sm">
       <button mat-icon-button [matMenuTriggerFor]="languageMenu">
         <mat-icon>language</mat-icon>
       </button>
@@ -30,7 +29,7 @@
       </mat-nav-list>
     </mat-sidenav>
 
-    <mat-sidenav-content class="p-6">
+    <mat-sidenav-content class="p-md">
       <div class="container mx-auto">
         <router-outlet />
       </div>
